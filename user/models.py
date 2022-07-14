@@ -3,21 +3,25 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, user_id, password=None):
+    def create_user(self, user_id, username, password=None):
         if not user_id:
-            raise ValueError('Users must have an username')
+            raise ValueError('Users must have an id')
+        if not username:
+            raise ValueError('User must have an username')
         user = self.model(
             user_id=user_id,
+            username = username
         )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
     # python manage.py createsuperuser 사용 시 해당 함수가 사용됨
-    def create_superuser(self, user_id, password=None):
+    def create_superuser(self, user_id, username, password=None):
         user = self.create_user(
             user_id=user_id,
-            password=password
+            password=password,
+            username = username
         )
         user.is_admin = True
         user.save(using=self._db)
