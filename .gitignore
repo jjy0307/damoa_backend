@@ -4,7 +4,4 @@ venv
 custom_settings.py
 NBLastProjectBackend/settings.py
 media
-article/migrations
-community/migrations
-noticeboard/migrations
-user/migrations
+0001_initial.py
