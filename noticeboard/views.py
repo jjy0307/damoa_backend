@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from .models import Noticeboard
+from .serializers import NoticeboardSerializer
+from rest_framework import viewsets
 
-# Create your views here.
+class NoticeboardViewSet(viewsets.ModelViewSet):
+    queryset = Noticeboard.objects.all()
+    serializer_class = NoticeboardSerializer
