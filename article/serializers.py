@@ -4,21 +4,21 @@ from rest_framework import serializers
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
-        fields = ['title','content','image','file']
+        fields = ['noticeboard', 'user', 'title','content', 'created_date', 'modified_date', 'image','file']
         
 class ArticleLikesSerializer(serializers.ModelSerializer):
     class Meta:
         model = ArticleLikes
-        fields = ['likes']
+        fields = ['user', 'artcle', 'likes']
         
         
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ['content']
+        fields = ['article', 'user', 'content', 'created_date', 'modified_date']
         
         
 class CommentLikesSerializer(serializers.ModelSerializer):
     class Meta:
         model = CommentLikes
-        fields = ['likes']
+        fields = ['user', 'comment', 'likes']
