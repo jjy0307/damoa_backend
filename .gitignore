@@ -8,6 +8,3 @@ article/migrations
 community/migrations
 noticeboard/migrations
 user/migrations
-serializers.py
-views.py
-urls.py
