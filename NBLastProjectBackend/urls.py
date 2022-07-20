@@ -15,29 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from article.views import ArticleViewSet, ArticleLikesViewSet, CommentViewSet , CommentLikesViewSet
-from noticeboard.views import NoticeboardViewSet, UserAndNoticeboardViewSet
-from rest_framework.routers import DefaultRouter
-
-router = DefaultRouter()
-# 게시판 생성
-router.register('noticeboard/create', NoticeboardViewSet)
-#UserAndNoticeboard 클래스 보기
-router.register('noticeboard/create/list', UserAndNoticeboardViewSet)
-# 게시글 생성, 수정 ,삭제
-router.register('article/write', ArticleViewSet)
-# 댓글 생성, 수정 ,삭제
-router.register('comment/write', CommentViewSet)
-# 게시글 추천
-router.register('article/suggestion', ArticleLikesViewSet)
-# 댓글 추천
-router.register('comment/suggestion', CommentLikesViewSet)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('article.urls')),
+    path("admin/", admin.site.urls),
+    path("", include("article.urls")),
     # path('', include('community.urls')),
-    path('', include('noticeboard.urls')),
+    path("", include("noticeboard.urls")),
     # path('', include('user.urls')),
-    path('',include(router.urls)),
 ]

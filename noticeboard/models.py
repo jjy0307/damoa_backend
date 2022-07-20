@@ -8,8 +8,9 @@ class Noticeboard(models.Model):
     name = models.CharField(max_length=20)
     is_public = models.BooleanField(default=True)
     created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now = True)
-    
+    modified_date = models.DateTimeField(auto_now=True)
+
+
 class UserAndNoticeboard(models.Model):
     user = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE)
     noticeboard = models.ForeignKey(Noticeboard, on_delete=models.CASCADE)
