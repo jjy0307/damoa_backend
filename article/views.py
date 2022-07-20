@@ -51,34 +51,6 @@ class ArticleDel(APIView):
         pass
 
 
-class ArticleLikesDetail(APIView):
-    def get_object(self, pk):
-        try:
-            return ArticleLikes.objects.get(pk=pk)
-        except ArticleLikes.DoesNotExist:
-            raise Http404
-
-    def get(self, request, pk, format=None):
-        articleLikes = self.get_object(pk)
-        serializer = ArticleLikesSerializer(articleLikes)
-        return Response(serializer.data)
-
-    def post(self, request):
-        serializer = ArticleLikesSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def put(self, request, pk, format=None):
-        articleLikes = self.get_object(pk)
-        serializer = ArticleLikesSerializer(articleLikes, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 class CommentList(APIView):
     def get(self, request):
         comments = Comment.objects.all()
@@ -130,6 +102,34 @@ class CommentDel(APIView):
         comment = self.get_object(pk)
         comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ArticleLikesDetail(APIView):
+    def get_object(self, pk):
+        try:
+            return ArticleLikes.objects.get(pk=pk)
+        except ArticleLikes.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        articleLikes = self.get_object(pk)
+        serializer = ArticleLikesSerializer(articleLikes)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = ArticleLikesSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk, format=None):
+        articleLikes = self.get_object(pk)
+        serializer = ArticleLikesSerializer(articleLikes, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CommentLikesDetail(APIView):
