@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'NBLastProjectBackend.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "NBLastProjectBackend.settings")
 
 application = get_wsgi_application()
