@@ -2,16 +2,17 @@ from .models import Article, ArticleLikes, Comment, CommentLikes
 from rest_framework import serializers
 
 
-class ArticleListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Article
-        fields = ["noticeboard", "user", "title", "content", "created_date"]
-
-
 class ArticleSerializer(serializers.ModelSerializer):
+    user_name = serializers.SerializerMethodField()
+
+    def get_user_name(self, obj):
+        return obj.user.username
+
     class Meta:
         model = Article
         fields = [
+            "id",
+            "user_name",
             "noticeboard",
             "user",
             "title",
@@ -30,9 +31,21 @@ class ArticleLikesSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    user_name = serializers.SerializerMethodField()
+
+    def get_user_name(self, obj):
+        return obj.user.username
+
     class Meta:
         model = Comment
-        fields = ["user", "content", "created_date", "modified_date"]
+        fields = [
+            "user",
+            "article",
+            "user_name",
+            "content",
+            "created_date",
+            "modified_date",
+        ]
 
 
 class CommentLikesSerializer(serializers.ModelSerializer):
