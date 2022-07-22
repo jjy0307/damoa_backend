@@ -3,17 +3,22 @@ from rest_framework import serializers
 
 from rest_framework.exceptions import ValidationError
 
-class ArticleListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Article
-        fields = ["noticeboard", "user", "title", "content", "created_date"]
-
-
 class ArticleSerializer(serializers.ModelSerializer):
+<<<<<<< HEAD
     print("gggggg")
     class Meta:         
+=======
+    user_name = serializers.SerializerMethodField()
+
+    def get_user_name(self, obj):
+        return obj.user.username
+
+    class Meta:
+>>>>>>> 570d79a2236c0e3616af0bc4525e1ed72828b28c
         model = Article
         fields = [
+            "id",
+            "user_name",
             "noticeboard",
             "user",
             "title",
@@ -57,9 +62,21 @@ class ArticleLikesSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    user_name = serializers.SerializerMethodField()
+
+    def get_user_name(self, obj):
+        return obj.user.username
+
     class Meta:
         model = Comment
-        fields = ["user", "content", "created_date", "modified_date"]
+        fields = [
+            "user",
+            "article",
+            "user_name",
+            "content",
+            "created_date",
+            "modified_date",
+        ]
 
 
 class CommentLikesSerializer(serializers.ModelSerializer):

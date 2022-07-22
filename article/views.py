@@ -1,8 +1,12 @@
 from .models import Article, ArticleLikes, Comment, CommentLikes
+<<<<<<< HEAD
 from noticeboard.models import Noticeboard
+=======
+
+# from user.models import CustomUser
+>>>>>>> 570d79a2236c0e3616af0bc4525e1ed72828b28c
 from .serializers import (
     ArticleSerializer,
-    ArticleListSerializer,
     ArticleLikesSerializer,
     CommentSerializer,
     CommentLikesSerializer,
@@ -19,7 +23,7 @@ import copy
 class ArticleList(APIView):
     def get(self, request):
         articles = Article.objects.all()
-        serializer = ArticleListSerializer(articles, many=True)
+        serializer = ArticleSerializer(articles, many=True)
         return Response(serializer.data)
 
 
