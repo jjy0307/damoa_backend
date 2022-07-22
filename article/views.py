@@ -1,4 +1,5 @@
 from .models import Article, ArticleLikes, Comment, CommentLikes
+from noticeboard.models import Noticeboard
 from .serializers import (
     ArticleSerializer,
     ArticleListSerializer,
@@ -12,6 +13,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import Http404
+import copy
 
 
 class ArticleList(APIView):
@@ -22,8 +24,29 @@ class ArticleList(APIView):
 
 
 class ArticleAdd(APIView):
+    def get(self, request):
+        articles = Article.objects.all
+        serializer = ArticleSerializer(articles, many=True).data     
+        return Response(serializer, status=status.HTTP_200_OK)
+
+  
     def post(self, request):
-        pass
+        # print('request.data', request.data)
+        notice_board = Noticeboard.objects.get(name='자유 게시판')
+        print(request.data)
+        # print("notice_board", notice_board) 
+        data2 = copy.deepcopy(request.data)
+        # print("data2", data2)
+        data2['noticeboard'] = notice_board.id
+        # print("data2['noticeboard']", data2['noticeboard'])
+        # print("data2", data2)
+        serializer = ArticleSerializer(data=data2)
+        print("1")
+        if serializer.is_valid():
+            print("1") 
+            serializer.save()
+            return Response({"message": "글 작성 완료!!"})
+        return Response({"message": f'${serializer.errors}'}, 400) 
 
 
 class ArticleDetail(APIView):
@@ -38,17 +61,34 @@ class ArticleDetail(APIView):
         serializer = ArticleSerializer(article)
         return Response(serializer.data)
 
-
-# article 수정하기
 class ArticleMod(APIView):
-    def put(self, request):
-        pass
+    def get_object(self, pk):
+        try:
+            return Article.objects.get(pk=pk)
+        except Article.DoesNotExist:
+            raise Http404
 
+    def put(self, request, pk):
+        article = self.get_object(pk)
+        serializer = ArticleSerializer(article, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # article 삭제하기
 class ArticleDel(APIView):
-    def delete(self, request):
-        pass
+    def get_object(self, pk):
+        try:
+            return Article.objects.get(pk=pk)
+        except Article.DoesNotExist:
+            raise Http404
+
+    def delete(self, request, pk):
+        article = self.get_object(pk)
+        article.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 
 class CommentList(APIView):
