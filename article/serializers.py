@@ -1,24 +1,17 @@
 from .models import Article, ArticleLikes, Comment, CommentLikes
-from user.models import CustomUser
 from rest_framework import serializers
 
 
-class ArticleListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Article
-        fields = ["id", "noticeboard", "user", "title", "content", "created_date"]
-
-
-class ArticleUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomUser
-        fields = ["username"]
-
-
 class ArticleSerializer(serializers.ModelSerializer):
+    user_name = serializers.SerializerMethodField()
+
+    def get_user_name(self, obj):
+        return obj.user.username
+
     class Meta:
         model = Article
         fields = [
+            "id",
             "noticeboard",
             "user",
             "title",
@@ -27,6 +20,7 @@ class ArticleSerializer(serializers.ModelSerializer):
             "modified_date",
             "image",
             "file",
+            "user_name",
         ]
 
 
