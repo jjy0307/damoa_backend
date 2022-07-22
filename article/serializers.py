@@ -1,11 +1,18 @@
 from .models import Article, ArticleLikes, Comment, CommentLikes
+from user.models import CustomUser
 from rest_framework import serializers
 
 
 class ArticleListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
-        fields = ["noticeboard", "user", "title", "content", "created_date"]
+        fields = ["id", "noticeboard", "user", "title", "content", "created_date"]
+
+
+class ArticleUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ["username"]
 
 
 class ArticleSerializer(serializers.ModelSerializer):
