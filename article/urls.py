@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path("article/", views.ArticleList.as_view()),
+    path("article/user/", views.ArticleUserList.as_view()),
     path("article/write/", views.ArticleAdd.as_view()),
     path("article/<int:pk>/write/", views.ArticleDetail.as_view()),
     path("article/<int:pk>/write/put", views.ArticleMod.as_view()),
