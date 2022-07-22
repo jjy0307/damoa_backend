@@ -1,7 +1,9 @@
 from .models import Article, ArticleLikes, Comment, CommentLikes
+from user.models import CustomUser
 from .serializers import (
-    ArticleSerializer,
     ArticleListSerializer,
+    ArticleUserSerializer,
+    ArticleSerializer,
     ArticleLikesSerializer,
     CommentSerializer,
     CommentLikesSerializer,
@@ -18,6 +20,13 @@ class ArticleList(APIView):
     def get(self, request):
         articles = Article.objects.all()
         serializer = ArticleListSerializer(articles, many=True)
+        return Response(serializer.data)
+
+
+class ArticleUserList(APIView):
+    def get(self, request):
+        users = CustomUser.objects.all()
+        serializer = ArticleUserSerializer(users, many=True)
         return Response(serializer.data)
 
 
