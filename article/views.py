@@ -1,8 +1,7 @@
 from .models import Article, ArticleLikes, Comment, CommentLikes
-from user.models import CustomUser
+
+# from user.models import CustomUser
 from .serializers import (
-    ArticleListSerializer,
-    ArticleUserSerializer,
     ArticleSerializer,
     ArticleLikesSerializer,
     CommentSerializer,
@@ -19,14 +18,7 @@ from django.http import Http404
 class ArticleList(APIView):
     def get(self, request):
         articles = Article.objects.all()
-        serializer = ArticleListSerializer(articles, many=True)
-        return Response(serializer.data)
-
-
-class ArticleUserList(APIView):
-    def get(self, request):
-        users = CustomUser.objects.all()
-        serializer = ArticleUserSerializer(users, many=True)
+        serializer = ArticleSerializer(articles, many=True)
         return Response(serializer.data)
 
 
