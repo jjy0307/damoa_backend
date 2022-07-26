@@ -21,4 +21,5 @@ urlpatterns = [
     path("user/", include("user.urls")),
     path("article/", include("article.urls")),
     path("noticeboard/", include("noticeboard.urls")),
+    path("community/", include("community.urls")),
 ]
