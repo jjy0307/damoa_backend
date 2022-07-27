@@ -6,17 +6,22 @@ from rest_framework.exceptions import ValidationError
 
 class ArticleSerializer(serializers.ModelSerializer):
     user_name = serializers.SerializerMethodField()
+    noticeboard_name = serializers.SerializerMethodField()
 
     def get_user_name(self, obj):
         return obj.user.username
+
+    def get_noticeboard_name(self, obj):
+        return obj.noticeboard.name
 
     class Meta:
         model = Article
         fields = [
             "id",
+            "user",
             "user_name",
             "noticeboard",
-            "user",
+            "noticeboard_name",
             "title",
             "content",
             "created_date",
@@ -62,8 +67,14 @@ class ArticleLikesSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     user_name = serializers.SerializerMethodField()
 
-    def get_user_name(self, obj):
-        return obj.user.username
+    try:
+        # user_name 댓글 작성시 없으면 오류나요
+        def get_user_name(self, obj):
+            return obj.user.username
+
+    except AttributeError:
+        # user.username = "탈퇴한 유저"
+        pass
 
     class Meta:
         model = Comment
