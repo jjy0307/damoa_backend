@@ -1,10 +1,5 @@
 from .models import Article, ArticleLikes, Comment, CommentLikes
-<<<<<<< HEAD
 from noticeboard.models import Noticeboard
-=======
-
-# from user.models import CustomUser
->>>>>>> 570d79a2236c0e3616af0bc4525e1ed72828b28c
 from .serializers import (
     ArticleSerializer,
     ArticleLikesSerializer,
@@ -27,30 +22,30 @@ class ArticleList(APIView):
         return Response(serializer.data)
 
 
+
 class ArticleAdd(APIView):
     def get(self, request):
         articles = Article.objects.all
-        serializer = ArticleSerializer(articles, many=True).data     
+        serializer = ArticleSerializer(articles, many=True).data
         return Response(serializer, status=status.HTTP_200_OK)
 
-  
     def post(self, request):
         # print('request.data', request.data)
-        notice_board = Noticeboard.objects.get(name='자유 게시판')
+        notice_board = Noticeboard.objects.get(name="자유 게시판")
         print(request.data)
-        # print("notice_board", notice_board) 
+        # print("notice_board", notice_board)
         data2 = copy.deepcopy(request.data)
         # print("data2", data2)
-        data2['noticeboard'] = notice_board.id
+        data2["noticeboard"] = notice_board.id
         # print("data2['noticeboard']", data2['noticeboard'])
         # print("data2", data2)
         serializer = ArticleSerializer(data=data2)
         print("1")
         if serializer.is_valid():
-            print("1") 
+            print("1")
             serializer.save()
             return Response({"message": "글 작성 완료!!"})
-        return Response({"message": f'${serializer.errors}'}, 400) 
+        return Response({"message": f"${serializer.errors}"}, 400)
 
 
 class ArticleDetail(APIView):
@@ -64,6 +59,7 @@ class ArticleDetail(APIView):
         article = self.get_object(pk)
         serializer = ArticleSerializer(article)
         return Response(serializer.data)
+
 
 class ArticleMod(APIView):
     def get_object(self, pk):
@@ -80,6 +76,7 @@ class ArticleMod(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 # article 삭제하기
 class ArticleDel(APIView):
     def get_object(self, pk):
@@ -92,7 +89,6 @@ class ArticleDel(APIView):
         article = self.get_object(pk)
         article.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
 
 
 class CommentList(APIView):
@@ -202,4 +198,3 @@ class CommentLikesDetail(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        pass
