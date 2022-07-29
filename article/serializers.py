@@ -7,6 +7,7 @@ from rest_framework.exceptions import ValidationError
 class ArticleSerializer(serializers.ModelSerializer):
     user_name = serializers.SerializerMethodField()
     noticeboard_name = serializers.SerializerMethodField()
+    noticeboard_id = serializers.SerializerMethodField()
 
     def get_user_name(self, obj):
         return obj.user.username
@@ -14,10 +15,14 @@ class ArticleSerializer(serializers.ModelSerializer):
     def get_noticeboard_name(self, obj):
         return obj.noticeboard.name
 
+    def get_noticeboard_id(self, obj):
+        return obj.noticeboard.id
+
     class Meta:
         model = Article
         fields = [
             "id",
+            "noticeboard_id",
             "user",
             "user_name",
             "noticeboard",
