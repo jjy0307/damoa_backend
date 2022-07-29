@@ -12,9 +12,7 @@ class MainLoginedCommunity(APIView):
         user = request.user
         if not user:
             serializer = CommunitySerializer()
-            print('a', serializer)
         else:
-            print(request.user)
             user_community = UserAndCommunityModel.objects.filter(user = request.user)
-            user_community_serializer = UserAndCommunitySerializer(user_community, many=True)
+            user_community_serializer = UserAndCommunitySerializer(user_community, many=True)      
         return Response(user_community_serializer.data)
