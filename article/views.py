@@ -22,6 +22,7 @@ class ArticleList(APIView):
         return Response(serializer.data)
 
 
+
 class ArticleAdd(APIView):
     def get(self, request):
         articles = Article.objects.all
@@ -204,4 +205,8 @@ class CommentLikesDetail(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+<<<<<<< HEAD
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+=======
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+>>>>>>> 5003bd8ee2d742834634b0b40935c8f0a2a178f1

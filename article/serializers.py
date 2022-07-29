@@ -7,7 +7,10 @@ from rest_framework.exceptions import ValidationError
 class ArticleSerializer(serializers.ModelSerializer):
     user_name = serializers.SerializerMethodField()
     noticeboard_name = serializers.SerializerMethodField()
+<<<<<<< HEAD
+=======
     noticeboard_id = serializers.SerializerMethodField()
+>>>>>>> 5003bd8ee2d742834634b0b40935c8f0a2a178f1
 
     def get_user_name(self, obj):
         return obj.user.username
@@ -15,14 +18,24 @@ class ArticleSerializer(serializers.ModelSerializer):
     def get_noticeboard_name(self, obj):
         return obj.noticeboard.name
 
+<<<<<<< HEAD
+    def get_article_count_limit(self, obj):
+        return   
+
+      
+=======
     def get_noticeboard_id(self, obj):
         return obj.noticeboard.id
+>>>>>>> 5003bd8ee2d742834634b0b40935c8f0a2a178f1
 
     class Meta:
         model = Article
         fields = [
             "id",
+<<<<<<< HEAD
+=======
             "noticeboard_id",
+>>>>>>> 5003bd8ee2d742834634b0b40935c8f0a2a178f1
             "user",
             "user_name",
             "noticeboard",
@@ -34,7 +47,11 @@ class ArticleSerializer(serializers.ModelSerializer):
             "image",
             "file",
         ]
+<<<<<<< HEAD
+        
+=======
 
+>>>>>>> 5003bd8ee2d742834634b0b40935c8f0a2a178f1
     def validate(self, data):
         if not data["noticeboard"]:
             print("noticebaord is suck", data["noticeboard"])
@@ -97,3 +114,25 @@ class CommentLikesSerializer(serializers.ModelSerializer):
     class Meta:
         model = CommentLikes
         fields = ["user", "comment", "likes"]
+
+
+class ArticleSerializerForNoticeboard(serializers.ModelSerializer):
+    # user_name = serializers.SerializerMethodField()
+
+    # def get_user_name(self, obj):
+    #     return obj.user.username
+
+    class Meta:
+        model = Article
+        fields = [
+            "id",
+            
+            "noticeboard",
+            "user",
+            "title",
+            "content",
+            "created_date",
+            "modified_date",
+            "image",
+            "file",
+        ]
