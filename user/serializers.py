@@ -32,11 +32,12 @@ class CustomUserSerializer(serializers.ModelSerializer):
         user.save()
         return user
         
+# 커스텀 해서 발생하는 문제
 class CustomUserTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
         token['id'] = user.id
         token['username'] = user.username
-        token['user_id'] = user.user_id
+        # token['userId'] = user.user_id
         return token

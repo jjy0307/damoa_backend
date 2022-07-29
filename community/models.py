@@ -8,16 +8,15 @@ class Tag(models.Model):
     def __str__(self):
         return str(self.name)
 
-
 class Community(models.Model):
-    tag = models.ForeignKey(Tag, on_delete=models.SET_NULL, null=True, blank=True)
+    # tag = models.ForeignKey(Tag, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=50)
     is_public = models.BooleanField(default=True)
     """
     이미지를 올리시 Django에서 자동적으로 media폴더를 생성해줍니다.
     upload_to를 작성하면 media폴더 안에 폴더를 만들어서 그 안에 이미지가 생성됩니다.
     """
-    image = models.ImageField(upload_to="images/community", null=True)
+    image = models.ImageField(upload_to="uploads/%Y%m%d", null=True)
     introduction = models.TextField(max_length=200)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
@@ -25,6 +24,12 @@ class Community(models.Model):
     def __str__(self):
         return f"커뮤니티 명: {self.name} / 공개 여부: {self.is_public}"
 
+class TagAndCommunity(models.Model):
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+    community = models.ForeignKey(Community, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return str(f'{self.community}의 태그는 {self.tag}입니다.')
 
 class UserAndCommunity(models.Model):
     user = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE)

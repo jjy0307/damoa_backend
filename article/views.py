@@ -95,14 +95,22 @@ class CommentList(APIView):
     def get(self, request):
         comments = Comment.objects.all()
         serializer = CommentSerializer(comments, many=True)
+        print("백엔드 : 댓글을 postman에서 get할 시 보이는 메시지 입니다.")
+        # print(f"백엔드 : serializer.data 는 {serializer.data} 입니다.")
         return Response(serializer.data)
 
     def post(self, request):
+        print("백엔드 : 댓글을 postman에서 post할 시 보이는 메시지 입니다.")
+        print(f"백엔드 : request.data 는 {request.data} 입니다.")
+        print(f"백엔드 : request.user 는 {request.user} 입니다.")
+        print(f"백엔드 : request.user.username type은 {type(request.user.username)} 입니다.")
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            print(f"백엔드 : serializer.data 는 {serializer.data} 입니다.")
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # return Response(status)
 
 
 class CommentMod(APIView):
@@ -197,4 +205,8 @@ class CommentLikesDetail(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+<<<<<<< HEAD
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+=======
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+>>>>>>> 5003bd8ee2d742834634b0b40935c8f0a2a178f1

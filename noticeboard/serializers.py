@@ -14,11 +14,36 @@ class NoticeboardSerializer(serializers.ModelSerializer):
     # article_info = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Noticeboard
+<<<<<<< HEAD
         fields = ["community", "name", "is_public", "created_date", "modified_date", "article_set"]
     # def get_article_info(self, obj):
     #     return 
+=======
+        fields = [
+            "id",
+            "community",
+            "name",
+            "is_public",
+            "created_date",
+            "modified_date",
+        ]
+
+>>>>>>> 5003bd8ee2d742834634b0b40935c8f0a2a178f1
 
 class UserAndNoticeboardSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAndNoticeboard
         fields = ["user", "noticeboard", "is_creator", "date_joined"]
+
+
+class NoticeboardandArticleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Noticeboard
+        fields = [
+            "id",
+            "community",
+            "name",
+            "is_public",
+            "created_date",
+            "modified_date",
+        ]

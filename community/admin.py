@@ -18,7 +18,6 @@ class CommunityAdmin(admin.ModelAdmin):
     """Community Admin Definition"""
 
     list_display = (
-        "tag",
         "name",
         "is_public",
         "image",
@@ -28,7 +27,6 @@ class CommunityAdmin(admin.ModelAdmin):
     )
 
     ordering = (
-        "tag",
         "name",
         "is_public",
         "image",
@@ -38,7 +36,6 @@ class CommunityAdmin(admin.ModelAdmin):
     )
 
     list_filter = (
-        "tag",
         "name",
         "is_public",
         "image",
