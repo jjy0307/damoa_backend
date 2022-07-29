@@ -8,3 +8,4 @@ article/migrations
 community/migrations
 noticeboard/migrations
 user/migrations
+aws.json
