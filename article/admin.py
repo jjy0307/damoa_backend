@@ -1,7 +1,6 @@
 from django.contrib import admin
 from article import models
 
-# Register your models here.
 @admin.register(models.Article)
 class ArticleAdmin(admin.ModelAdmin):
     """Article Admin Definition"""
@@ -13,7 +12,6 @@ class ArticleAdmin(admin.ModelAdmin):
         "content",
         "created_date",
         "modified_date",
-        "image",
         "file",
     )
 
@@ -109,3 +107,25 @@ class CommentLikesAdmin(admin.ModelAdmin):
         "comment",
         "likes",
     )
+
+
+@admin.register(models.Image)
+class ImageAdmin(admin.ModelAdmin):
+    """Image Admin Definition"""
+
+    list_display = ("image",)
+
+    ordering = ("image",)
+
+    list_filter = ("image",)
+
+
+@admin.register(models.ArticleAndImage)
+class ArticleAndImageAdmin(admin.ModelAdmin):
+    """ArticleAndImage Admin Definition"""
+
+    list_display = ("article", "image")
+
+    ordering = ("article", "image")
+
+    list_filter = ("article", "image")
