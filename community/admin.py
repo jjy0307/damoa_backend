@@ -11,7 +11,7 @@ class TagAdmin(admin.ModelAdmin):
     ordering = ("name",)
 
     list_filter = ("name",)
-    
+
 
 # Register your models here.
 @admin.register(models.TagAndCommunity)

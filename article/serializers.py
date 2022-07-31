@@ -66,21 +66,17 @@ class ArticleSerializer(serializers.ModelSerializer):
 
 class ArticleAndImageSerializer(serializers.ModelSerializer):
     article_id = serializers.SerializerMethodField()
-    # image_url = serializers.SerializerMethodField()
+    image_url = serializers.SerializerMethodField()
 
     def get_article_id(self, obj):
         return obj.article.id
 
-    # def get_image_url(self, obj):
-    #     return obj.image.image
+    def get_image_url(self, obj):
+        return obj.image.image
 
     class Meta:
         model = ArticleAndImage
-        fields = [
-            "image",
-            "article_id",
-            #   "image_url"
-        ]
+        fields = ["image", "article_id", "image_url"]
 
 
 class ArticleLikesSerializer(serializers.ModelSerializer):

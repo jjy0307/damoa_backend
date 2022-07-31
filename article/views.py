@@ -19,7 +19,6 @@ class ArticleList(APIView):
         return Response(serializer.data)
 
 
-
 class ArticleAdd(APIView):
     def get(self, request):
         articles = Article.objects.all
