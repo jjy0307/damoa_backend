@@ -1,4 +1,4 @@
-from .models import Article, ArticleLikes, Comment, CommentLikes
+from .models import Article, ArticleLikes, Comment, CommentLikes, ArticleAndImage
 from rest_framework import serializers
 
 from rest_framework.exceptions import ValidationError
@@ -10,6 +10,9 @@ class ArticleSerializer(serializers.ModelSerializer):
     noticeboard_id = serializers.SerializerMethodField()
 
     def get_user_name(self, obj):
+        # if AttributeError:
+        #     pass
+        # else:
         return obj.user.username
 
     def get_noticeboard_name(self, obj):
@@ -22,16 +25,14 @@ class ArticleSerializer(serializers.ModelSerializer):
         model = Article
         fields = [
             "id",
-            "noticeboard_id",
             "user",
             "user_name",
-            "noticeboard",
+            "noticeboard_id",
             "noticeboard_name",
             "title",
             "content",
             "created_date",
             "modified_date",
-            "image",
             "file",
         ]
 
@@ -54,13 +55,32 @@ class ArticleSerializer(serializers.ModelSerializer):
         # if not data['modified_date']:
         #     print('modified_date is suck', data['modified_date'])
         #     raise ValidationError('modified_date error')
-        if not data["image"]:
-            print("image is suck", data["image"])
-            raise ValidationError("image error")
+        # if not data["image"]:
+        # print("image is suck", data["image"])
+        # raise ValidationError("image error")
         # if not data['file']:
         #     print('file is suck', data['file'])
         #     raise ValidationError('file error')
         return data
+
+
+class ArticleAndImageSerializer(serializers.ModelSerializer):
+    article_id = serializers.SerializerMethodField()
+    # image_url = serializers.SerializerMethodField()
+
+    def get_article_id(self, obj):
+        return obj.article.id
+
+    # def get_image_url(self, obj):
+    #     return obj.image.image
+
+    class Meta:
+        model = ArticleAndImage
+        fields = [
+            "image",
+            "article_id",
+            #   "image_url"
+        ]
 
 
 class ArticleLikesSerializer(serializers.ModelSerializer):
@@ -73,12 +93,11 @@ class CommentSerializer(serializers.ModelSerializer):
     user_name = serializers.SerializerMethodField()
 
     try:
-        # user_name 댓글 작성시 없으면 오류나요
+
         def get_user_name(self, obj):
             return obj.user.username
 
     except AttributeError:
-        # user.username = "탈퇴한 유저"
         pass
 
     class Meta:
