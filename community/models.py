@@ -9,7 +9,6 @@ class Tag(models.Model):
         return str(self.name)
 
 class Community(models.Model):
-    # tag = models.ForeignKey(Tag, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=50)
     is_public = models.BooleanField(default=True)
     """

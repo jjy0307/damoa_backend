@@ -35,7 +35,6 @@ class ArticleSerializer(serializers.ModelSerializer):
             "modified_date",
             "file",
         ]
-
     def validate(self, data):
         if not data["noticeboard"]:
             print("noticebaord is suck", data["noticeboard"])
@@ -116,3 +115,25 @@ class CommentLikesSerializer(serializers.ModelSerializer):
     class Meta:
         model = CommentLikes
         fields = ["user", "comment", "likes"]
+
+
+class ArticleSerializerForNoticeboard(serializers.ModelSerializer):
+    # user_name = serializers.SerializerMethodField()
+
+    # def get_user_name(self, obj):
+    #     return obj.user.username
+
+    class Meta:
+        model = Article
+        fields = [
+            "id",
+            
+            "noticeboard",
+            "user",
+            "title",
+            "content",
+            "created_date",
+            "modified_date",
+            "image",
+            "file",
+        ]
