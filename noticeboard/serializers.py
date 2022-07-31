@@ -22,6 +22,7 @@ class NoticeboardSerializer(serializers.ModelSerializer):
             "is_public",
             "created_date",
             "modified_date",
+            "article_set",
         ]
 
 

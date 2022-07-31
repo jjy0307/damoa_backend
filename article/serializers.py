@@ -35,6 +35,7 @@ class ArticleSerializer(serializers.ModelSerializer):
             "modified_date",
             "file",
         ]
+
     def validate(self, data):
         if not data["noticeboard"]:
             print("noticebaord is suck", data["noticeboard"])
@@ -127,13 +128,11 @@ class ArticleSerializerForNoticeboard(serializers.ModelSerializer):
         model = Article
         fields = [
             "id",
-            
             "noticeboard",
             "user",
             "title",
             "content",
             "created_date",
             "modified_date",
-            "image",
             "file",
         ]
