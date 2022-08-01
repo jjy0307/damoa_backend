@@ -107,6 +107,7 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = [
+            "id",
             "user",
             "article",
             "user_name",
