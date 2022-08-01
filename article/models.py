@@ -18,8 +18,8 @@ class Article(models.Model):
     content = models.TextField(max_length=1000)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
-    # image = models.ImageField(null=True, upload_to="article/%Y%m%d")
     file = models.FileField(blank=True)
+    is_valid = models.BooleanField(default=False)
 
 
 class ArticleAndImage(models.Model):
@@ -41,6 +41,7 @@ class Comment(models.Model):
     content = models.TextField(max_length=300)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
+    is_valid = models.BooleanField(default=False)
 
 
 class CommentLikes(models.Model):
