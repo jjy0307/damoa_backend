@@ -72,6 +72,11 @@ class ArticleMod(APIView):
         except Article.DoesNotExist:
             raise Http404
 
+    def get(self, request, pk, format=None):
+        article = self.get_object(pk)
+        serializer = ArticleSerializer(article)
+        return Response(serializer.data)
+
     def put(self, request, pk):
         article = self.get_object(pk)
         serializer = ArticleSerializer(article, data=request.data)
@@ -87,6 +92,11 @@ class ArticleDel(APIView):
             return Article.objects.get(pk=pk)
         except Article.DoesNotExist:
             raise Http404
+
+    def get(self, request, pk, format=None):
+        article = self.get_object(pk)
+        serializer = ArticleSerializer(article)
+        return Response(serializer.data)
 
     def delete(self, request, pk):
         article = self.get_object(pk)
