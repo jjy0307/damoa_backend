@@ -19,6 +19,14 @@ class ArticleList(APIView):
         return Response(serializer.data)
 
 
+class ArticleAdminList(APIView):
+    def get(self, request):
+        articles = Article.objects.all()
+        is_valid_articles = articles.filter(is_valid=True)
+        serializer = ArticleSerializer(is_valid_articles, many=True)
+        return Response(serializer.data)
+
+
 class ArticleAdd(APIView):
     def get(self, request):
         articles = Article.objects.all
@@ -90,6 +98,14 @@ class ArticleAndImageList(APIView):
     def get(self, request):
         images = ArticleAndImage.objects.all()
         serializer = ArticleAndImageSerializer(images, many=True)
+        return Response(serializer.data)
+
+
+class CommentAdminList(APIView):
+    def get(self, request):
+        comments = Comment.objects.all()
+        is_valid_comments = comments.filter(is_valid=True)
+        serializer = CommentSerializer(is_valid_comments, many=True)
         return Response(serializer.data)
 
 
