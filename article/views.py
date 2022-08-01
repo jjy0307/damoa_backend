@@ -1,18 +1,15 @@
-from .models import Article, ArticleLikes, Comment, CommentLikes
-from noticeboard.models import Noticeboard
+from .models import Article, ArticleLikes, Comment, CommentLikes, ArticleAndImage
 from .serializers import (
     ArticleSerializer,
     ArticleLikesSerializer,
     CommentSerializer,
     CommentLikesSerializer,
+    ArticleAndImageSerializer,
 )
-
-# APIView를 사용하기 위해 import
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import Http404
-import copy
 
 
 class ArticleList(APIView):
@@ -22,30 +19,29 @@ class ArticleList(APIView):
         return Response(serializer.data)
 
 
-
 class ArticleAdd(APIView):
     def get(self, request):
         articles = Article.objects.all
         serializer = ArticleSerializer(articles, many=True).data
         return Response(serializer, status=status.HTTP_200_OK)
 
-    def post(self, request):
-        # print('request.data', request.data)
-        notice_board = Noticeboard.objects.get(name="자유 게시판")
-        print(request.data)
-        # print("notice_board", notice_board)
-        data2 = copy.deepcopy(request.data)
-        # print("data2", data2)
-        data2["noticeboard"] = notice_board.id
-        # print("data2['noticeboard']", data2['noticeboard'])
-        # print("data2", data2)
-        serializer = ArticleSerializer(data=data2)
-        print("1")
-        if serializer.is_valid():
-            print("1")
-            serializer.save()
-            return Response({"message": "글 작성 완료!!"})
-        return Response({"message": f"${serializer.errors}"}, 400)
+    # def post(self, request):
+    #     # print('request.data', request.data)
+    #     notice_board = Noticeboard.objects.get(name="공개게시판")
+    #     print(request.data)
+    #     # print("notice_board", notice_board)
+    #     data2 = copy.deepcopy(request.data)
+    #     # print("data2", data2)
+    #     data2["noticeboard"] = notice_board.id
+    #     # print("data2['noticeboard']", data2['noticeboard'])
+    #     # print("data2", data2)
+    #     serializer = ArticleSerializer(data=data2)
+    #     print("1")
+    #     if serializer.is_valid():
+    #         print("1")
+    #         serializer.save()
+    #         return Response({"message": "글 작성 완료!!"})
+    #     return Response({"message": f"${serializer.errors}"}, 400)
 
 
 class ArticleDetail(APIView):
@@ -77,7 +73,6 @@ class ArticleMod(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# article 삭제하기
 class ArticleDel(APIView):
     def get_object(self, pk):
         try:
@@ -91,26 +86,25 @@ class ArticleDel(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class ArticleAndImageList(APIView):
+    def get(self, request):
+        images = ArticleAndImage.objects.all()
+        serializer = ArticleAndImageSerializer(images, many=True)
+        return Response(serializer.data)
+
+
 class CommentList(APIView):
     def get(self, request):
         comments = Comment.objects.all()
         serializer = CommentSerializer(comments, many=True)
-        print("백엔드 : 댓글을 postman에서 get할 시 보이는 메시지 입니다.")
-        # print(f"백엔드 : serializer.data 는 {serializer.data} 입니다.")
         return Response(serializer.data)
 
     def post(self, request):
-        print("백엔드 : 댓글을 postman에서 post할 시 보이는 메시지 입니다.")
-        print(f"백엔드 : request.data 는 {request.data} 입니다.")
-        print(f"백엔드 : request.user 는 {request.user} 입니다.")
-        print(f"백엔드 : request.user.username type은 {type(request.user.username)} 입니다.")
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            print(f"백엔드 : serializer.data 는 {serializer.data} 입니다.")
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        # return Response(status)
 
 
 class CommentMod(APIView):
@@ -205,7 +199,11 @@ class CommentLikesDetail(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+<<<<<<< HEAD
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+=======
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+>>>>>>> 3e5d77ced11ceb269acff61b218ff3b8a99b7882

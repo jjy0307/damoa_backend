@@ -13,6 +13,18 @@ class TagAdmin(admin.ModelAdmin):
     list_filter = ("name",)
 
 
+# Register your models here.
+@admin.register(models.TagAndCommunity)
+class TagAndCommunityAdmin(admin.ModelAdmin):
+    """Tag And Community Admin Definition"""
+
+    list_display = ("tag", "community")
+
+    ordering = ("tag", "community")
+
+    list_filter = ("tag", "community")
+
+
 @admin.register(models.Community)
 class CommunityAdmin(admin.ModelAdmin):
     """Community Admin Definition"""

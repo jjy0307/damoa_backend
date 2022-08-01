@@ -8,8 +8,8 @@ class Tag(models.Model):
     def __str__(self):
         return str(self.name)
 
+
 class Community(models.Model):
-    # tag = models.ForeignKey(Tag, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=50)
     is_public = models.BooleanField(default=True)
     """
@@ -24,12 +24,14 @@ class Community(models.Model):
     def __str__(self):
         return f"커뮤니티 명: {self.name} / 공개 여부: {self.is_public}"
 
+
 class TagAndCommunity(models.Model):
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
     community = models.ForeignKey(Community, on_delete=models.CASCADE)
-    
+
     def __str__(self):
-        return str(f'{self.community}의 태그는 {self.tag}입니다.')
+        return str(f"{self.community}의 태그는 {self.tag}입니다.")
+
 
 class UserAndCommunity(models.Model):
     user = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE)
