@@ -15,9 +15,15 @@ class ArticleSerializer(serializers.ModelSerializer):
         return obj.user.username
 
     def get_noticeboard_name(self, obj):
+        # if AttributeError:
+        #     pass
+        # else:
         return obj.noticeboard.name
 
     def get_noticeboard_id(self, obj):
+        # if AttributeError:
+        #     pass
+        # else:
         return obj.noticeboard.id
 
     class Meta:
@@ -33,6 +39,7 @@ class ArticleSerializer(serializers.ModelSerializer):
             "created_date",
             "modified_date",
             "file",
+            "is_valid",
         ]
 
     def validate(self, data):
@@ -72,7 +79,7 @@ class ArticleAndImageSerializer(serializers.ModelSerializer):
 
     def get_image_url(self, obj):
         # print(f"이미지는...{obj.image.url}")
-        print(dir(obj.image.image))
+        # print(dir(obj.image.image))
         return obj.image.image.url
 
     class Meta:
@@ -106,6 +113,7 @@ class CommentSerializer(serializers.ModelSerializer):
             "content",
             "created_date",
             "modified_date",
+            "is_valid",
         ]
 
 
