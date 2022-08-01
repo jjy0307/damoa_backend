@@ -1,6 +1,5 @@
 from .models import Article, ArticleLikes, Comment, CommentLikes, ArticleAndImage
 from rest_framework import serializers
-
 from rest_framework.exceptions import ValidationError
 
 
@@ -72,7 +71,9 @@ class ArticleAndImageSerializer(serializers.ModelSerializer):
         return obj.article.id
 
     def get_image_url(self, obj):
-        return obj.image.image
+        # print(f"이미지는...{obj.image.url}")
+        print(dir(obj.image.image))
+        return obj.image.image.url
 
     class Meta:
         model = ArticleAndImage
