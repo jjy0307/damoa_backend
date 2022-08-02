@@ -116,17 +116,6 @@ class CommentLikesAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(models.Image)
-class ImageAdmin(admin.ModelAdmin):
-    """Image Admin Definition"""
-
-    list_display = ("image",)
-
-    ordering = ("image",)
-
-    list_filter = ("image",)
-
-
 @admin.register(models.ArticleAndImage)
 class ArticleAndImageAdmin(admin.ModelAdmin):
     """ArticleAndImage Admin Definition"""
