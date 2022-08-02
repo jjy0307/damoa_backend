@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import Http404
+import run_model.lstm as lstm
 
 
 class ArticleList(APIView):
@@ -29,12 +30,16 @@ class ArticleAdminList(APIView):
 
 class ArticleAdd(APIView):
     def get(self, request):
-        articles = Article.objects.all
+        articles = Article.objects.all()
         serializer = ArticleSerializer(articles, many=True).data
         return Response(serializer, status=status.HTTP_200_OK)
 
-    # def post(self, request):
-    #     # print('request.data', request.data)
+    def post(self, request):
+        print("request.data 는 : ", request.data)
+        a = request.data
+        if lstm(a["content"]) < 50:
+            a["is_valid"] = True
+
     #     notice_board = Noticeboard.objects.get(name="공개게시판")
     #     print(request.data)
     #     # print("notice_board", notice_board)
