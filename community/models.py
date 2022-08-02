@@ -41,3 +41,10 @@ class UserAndCommunity(models.Model):
 
     def __str__(self):
         return f"{self.user}의 {self.community} 참여일은 {self.date_joined}입니다. 관리자 여부는 {self.is_admin}입니다."
+
+
+# class UserAndCommunityIsValid(models.Model):
+#     user = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE)
+#     community = models.ForeignKey(Community, on_delete=models.CASCADE)
+#     # true 시 신청완료 -> 어드민 : yes -> UserAndCommunity 만들어짐 (가입됨) -> UserAndCommunityIsValid 삭제
+#     is_valid = models.BooleanField(default=False)
