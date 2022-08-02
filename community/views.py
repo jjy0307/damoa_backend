@@ -11,6 +11,17 @@ from community.models import UserAndCommunity as UserAndCommunityModel
 from community.models import Tag as TagModel
 # Create your views here.
 class MainLoginedCommunity(APIView):
+    def get_community_count_order_list(self):
+        order_data = []
+        community_order_list = CommunityModel.objects.all().order_by('-count')
+        count_num = 0
+        for community_query in community_order_list:
+            order_data.append({"community":community_query.name, "count":community_query.count})
+            if count_num == 4:
+                break
+            count_num += 1
+        return order_data
+    
     def get(self, request):
         user = request.user
         data = {}
@@ -23,7 +34,7 @@ class MainLoginedCommunity(APIView):
                 for s_data in s_datas["tag"]:
                     if s_data["name"] not in data["tag"]:
                         data["tag"].append(s_data["name"])
-
+            data["community_hit_count"] = MainLoginedCommunity.get_community_count_order_list(self)
             return Response(data, status=200)
 
         user_community = UserAndCommunityModel.objects.filter(user=request.user)
@@ -39,6 +50,8 @@ class MainLoginedCommunity(APIView):
         data["all_tag"] = []
         for tag_data in TagModel.objects.all():
             data["all_tag"].append(tag_data.name)
+        
+        data["community_hit_count"] = MainLoginedCommunity.get_community_count_order_list(self)
         return Response(data, status=200)
 
 class MainCreateCommunity(APIView):
