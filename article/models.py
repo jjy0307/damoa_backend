@@ -3,10 +3,6 @@ from noticeboard.models import Noticeboard as NoticeboardModel
 from user.models import CustomUser as CustomUserModel
 
 
-class Image(models.Model):
-    image = models.ImageField(null=True, upload_to="article/%Y%m%d")
-
-
 class Article(models.Model):
     noticeboard = models.ForeignKey(NoticeboardModel, on_delete=models.CASCADE)
     user = models.ForeignKey(
@@ -18,13 +14,13 @@ class Article(models.Model):
     content = models.TextField(max_length=1000)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
-    file = models.FileField(blank=True)
+    file = models.FileField(null=True, blank=True)
     is_valid = models.BooleanField(default=False)
 
 
 class ArticleAndImage(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    image = models.ForeignKey(Image, on_delete=models.CASCADE)
+    image = models.ImageField(blank=True, null=True, upload_to="article/%Y%m%d")
 
 
 class ArticleLikes(models.Model):
