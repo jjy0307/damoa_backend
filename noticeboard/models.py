@@ -16,3 +16,4 @@ class UserAndNoticeboard(models.Model):
     noticeboard = models.ForeignKey(Noticeboard, on_delete=models.CASCADE)
     is_creator = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
+
