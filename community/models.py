@@ -44,9 +44,10 @@ class UserAndCommunity(models.Model):
     # accepted = models.BooleanField(blank=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     # invitation_result_date = models.DateTimeField(auto_now=True)
-    
+
     def __str__(self):
         return f"{self.user}의 {self.community} 참여일은 {self.date_joined}입니다. 관리자 여부는 {self.is_admin}입니다."
+
 
 class IpAndCommunity(models.Model):
     community = models.ForeignKey(Community, on_delete=models.CASCADE)
