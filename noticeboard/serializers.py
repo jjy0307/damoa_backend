@@ -11,12 +11,8 @@ class NoticeboardSerializer(serializers.ModelSerializer):
         articles = instance.article_set.all().order_by("-created_date")
         return ArticleSerializerForNoticeboard(articles, many=True).data
 
-<<<<<<< HEAD
-=======
     def get_community_name(self, obj):
         return obj.community.name
-
->>>>>>> b914241f40f4307ab294d59bd6681827c80cceec
     class Meta:
         model = Noticeboard
         fields = [
