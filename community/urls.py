@@ -4,5 +4,6 @@ from . import views
 
 urlpatterns = [
     path("main/", views.MainLoginedCommunity.as_view()),
-    path("main/create", views.MainCreateCommunity.as_view())
+    path("main/mypage/", views.MypageForCommunity.as_view()),
+    path("main/create", views.MainCreateCommunity.as_view()),
 ]

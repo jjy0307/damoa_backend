@@ -8,6 +8,7 @@ class CustomUserAdmin(admin.ModelAdmin):
 
     list_display = (
         "user_id",
+        "user_email",
         "password",
         "username",
         "created_date",
@@ -15,10 +16,11 @@ class CustomUserAdmin(admin.ModelAdmin):
         "is_admin",
     )
 
-    ordering = ("user_id", "username", "created_date", "is_admin")
+    ordering = ("user_id", "user_email", "username", "created_date", "is_admin")
 
     list_filter = (
         "user_id",
+        "user_email",
         "password",
         "username",
         "created_date",

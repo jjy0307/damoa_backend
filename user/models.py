@@ -25,9 +25,9 @@ class CustomUser(AbstractBaseUser):
     user_id = models.CharField("아이디", max_length=50, unique=True)
     password = models.CharField("비밀번호", max_length=128)
     username = models.CharField("이름", max_length=20)
+    user_email = models.EmailField("이메일", max_length=254)
     created_date = models.DateTimeField("생성일", auto_now_add=True)
     is_active = models.BooleanField(default=True)
-
     is_admin = models.BooleanField(default=False)
 
     USERNAME_FIELD = "user_id"

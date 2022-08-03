@@ -55,4 +55,8 @@ class NoticeboardObject(APIView):
     def get(self, request, pk):
         noticeboard = Noticeboard.objects.filter(id=pk)
         serializer = NoticeboardSerializer(noticeboard, many=True)
+<<<<<<< HEAD
         return Response(serializer.data, status=200)
+=======
+        return Response(serializer.data, status=200)
+>>>>>>> b914241f40f4307ab294d59bd6681827c80cceec

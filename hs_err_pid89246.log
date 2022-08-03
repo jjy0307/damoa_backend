@@ -1,0 +1,139 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x00000001690e8eac, pid=89246, tid=259
+#
+# JRE version: OpenJDK Runtime Environment Zulu15.40+19-CA (15.0.7+4) (build 15.0.7+4-MTS)
+# Java VM: OpenJDK 64-Bit Server VM Zulu15.40+19-CA (15.0.7+4-MTS, mixed mode, tiered, compressed oops, g1 gc, bsd-aarch64)
+# Problematic frame:
+# C  [fast_module_type.so+0x6ceac]
+#
+# No core dump will be written. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
+#
+# If you would like to submit a bug report, please visit:
+#   http://www.azul.com/support/
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -Dfile.encoding=UTF8 -ea -Xmx1024m 
+
+Host: MacBookAir10,1 arm64 1 MHz, 8 cores, 16G, Darwin 21.5.0
+Time: Wed Aug  3 07:55:12 2022 UTC elapsed time: 1.684765 seconds (0d 0h 0m 1s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00000001698e8000):  JavaThread "main" [_thread_in_native, id=259, stack(0x00000001690e8000,0x000000016b0e8000)]
+
+Stack: [0x00000001690e8000,0x000000016b0e8000],  sp=0x000000016b0da8d0,  free space=32714k
+Native frames: (J=compiled Java code, A=aot compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [fast_module_type.so+0x6ceac]
+C  [python3.8+0x83434]  _PyObject_LookupAttr+0x74
+C  [python3.8+0x12fe74]  builtin_hasattr+0xec
+C  [python3.8+0x7d78c]  cfunction_vectorcall_FASTCALL+0x11c
+C  [python3.8+0x140118]  call_function+0x210
+C  [python3.8+0x13c740]  _PyEval_EvalFrameDefault+0x7864
+C  [python3.8+0x2ae6c]  function_code_fastcall+0x80
+C  [python3.8+0x140118]  call_function+0x210
+C  [python3.8+0x13c740]  _PyEval_EvalFrameDefault+0x7864
+C  [python3.8+0x2ae6c]  function_code_fastcall+0x80
+C  [python3.8+0x140118]  call_function+0x210
+C  [python3.8+0x13c6c0]  _PyEval_EvalFrameDefault+0x77e4
+C  [python3.8+0x134894]  _PyEval_EvalCodeWithName+0xcb0
+C  [python3.8+0x2afec]  _PyFunction_Vectorcall+0xec
+C  [python3.8+0x140118]  call_function+0x210
+C  [python3.8+0x13c7bc]  _PyEval_EvalFrameDefault+0x78e0
+C  [python3.8+0x2ae6c]  function_code_fastcall+0x80
+C  [python3.8+0x2e9c8]  method_vectorcall+0x9c
+C  [python3.8+0x140118]  call_function+0x210
+C  [python3.8+0x13c6c0]  _PyEval_EvalFrameDefault+0x77e4
+C  [python3.8+0x134894]  _PyEval_EvalCodeWithName+0xcb0
+C  [python3.8+0x2afec]  _PyFunction_Vectorcall+0xec
+C  [python3.8+0x140118]  call_function+0x210
+C  [python3.8+0x13c6a4]  _PyEval_EvalFrameDefault+0x77c8
+C  [python3.8+0x2ae6c]  function_code_fastcall+0x80
+C  [python3.8+0x140118]  call_function+0x210
+C  [python3.8+0x13c6a4]  _PyEval_EvalFrameDefault+0x77c8
+C  [python3.8+0x2ae6c]  function_code_fastcall+0x80
+C  [python3.8+0x140118]  call_function+0x210
+C  [python3.8+0x13c740]  _PyEval_EvalFrameDefault+0x7864
+C  [python3.8+0x134894]  _PyEval_EvalCodeWithName+0xcb0
+C  [python3.8+0x2afec]  _PyFunction_Vectorcall+0xec
+C  [python3.8+0x140118]  call_function+0x210
+C  [python3.8+0x13c7bc]  _PyEval_EvalFrameDefault+0x78e0
+C  [python3.8+0x134894]  _PyEval_EvalCodeWithName+0xcb0
+C  [python3.8+0x2afec]  _PyFunction_Vectorcall+0xec
+C  [python3.8+0x2a690]  PyVectorcall_Call+0x78
+C  [python3.8+0x13c96c]  _PyEval_EvalFrameDefault+0x7a90
+C  [python3.8+0x134894]  _PyEval_EvalCodeWithName+0xcb0
+C  [python3.8+0x2afec]  _PyFunction_Vectorcall+0xec
+C  [python3.8+0x2a690]  PyVectorcall_Call+0x78
+C  [python3.8+0x13c96c]  _PyEval_EvalFrameDefault+0x7a90
+C  [python3.8+0x134894]  _PyEval_EvalCodeWithName+0xcb0
+C  [python3.8+0x2afec]  _PyFunction_Vectorcall+0xec
+C  [python3.8+0x140118]  call_function+0x210
+C  [python3.8+0x13c7bc]  _PyEval_EvalFrameDefault+0x78e0
+C  [python3.8+0x2ae6c]  function_code_fastcall+0x80
+C  [python3.8+0x140118]  call_function+0x210
+C  [python3.8+0x13c6a4]  _PyEval_EvalFrameDefault+0x77c8
+C  [python3.8+0x2ae6c]  function_code_fastcall+0x80
+C  [python3.8+0x140118]  call_function+0x210
+C  [python3.8+0x13c6a4]  _PyEval_EvalFrameDefault+0x77c8
+C  [python3.8+0x134894]  _PyEval_EvalCodeWithName+0xcb0
+C  [python3.8+0x2afec]  _PyFunction_Vectorcall+0xec
+C  [python3.8+0x2eb34]  method_vectorcall+0x208
+C  [python3.8+0x2a690]  PyVectorcall_Call+0x78
+C  [python3.8+0x13c96c]  _PyEval_EvalFrameDefault+0x7a90
+C  [python3.8+0x134894]  _PyEval_EvalCodeWithName+0xcb0
+C  [python3.8+0x2afec]  _PyFunction_Vectorcall+0xec
+C  [python3.8+0x2e9c8]  method_vectorcall+0x9c
+C  [python3.8+0x140118]  call_function+0x210
+C  [python3.8+0x13c7bc]  _PyEval_EvalFrameDefault+0x78e0
+C  [python3.8+0x134894]  _PyEval_EvalCodeWithName+0xcb0
+C  [python3.8+0x2afec]  _PyFunction_Vectorcall+0xec
+C  [python3.8+0x2eb34]  method_vectorcall+0x208
+C  [python3.8+0x2a690]  PyVectorcall_Call+0x78
+C  [python3.8+0x13c96c]  _PyEval_EvalFrameDefault+0x7a90
+C  [python3.8+0x134894]  _PyEval_EvalCodeWithName+0xcb0
+C  [python3.8+0x2afec]  _PyFunction_Vectorcall+0xec
+C  [python3.8+0x2a690]  PyVectorcall_Call+0x78
+C  [python3.8+0x13c96c]  _PyEval_EvalFrameDefault+0x7a90
+C  [python3.8+0x134894]  _PyEval_EvalCodeWithName+0xcb0
+C  [python3.8+0x2afec]  _PyFunction_Vectorcall+0xec
+C  [python3.8+0x29ed8]  _PyObject_FastCallDict+0x11c
+C  [python3.8+0x2bdb0]  _PyObject_Call_Prepend+0x9c
+C  [python3.8+0xa013c]  slot_tp_call+0x128
+C  [python3.8+0x2a1f4]  _PyObject_MakeTpCall+0x268
+C  [python3.8+0x1401b0]  call_function+0x2a8
+C  [python3.8+0x13c6c0]  _PyEval_EvalFrameDefault+0x77e4
+C  [python3.8+0x134894]  _PyEval_EvalCodeWithName+0xcb0
+C  [python3.8+0x2afec]  _PyFunction_Vectorcall+0xec
+C  [python3.8+0x2a690]  PyVectorcall_Call+0x78
+C  [python3.8+0x13c96c]  _PyEval_EvalFrameDefault+0x7a90
+C  [python3.8+0x134894]  _PyEval_EvalCodeWithName+0xcb0
+C  [python3.8+0x2afec]  _PyFunction_Vectorcall+0xec
+C  [python3.8+0x140118]  call_function+0x210
+C  [python3.8+0x13c6a4]  _PyEval_EvalFrameDefault+0x77c8
+C  [python3.8+0x2ae6c]  function_code_fastcall+0x80
+C  [python3.8+0x140118]  call_function+0x210
+C  [python3.8+0x13c740]  _PyEval_EvalFrameDefault+0x7864
+C  [python3.8+0x134894]  _PyEval_EvalCodeWithName+0xcb0
+C  [python3.8+0x12f9f4]  builtin_exec+0x448
+C  [python3.8+0x7d78c]  cfunction_vectorcall_FASTCALL+0x11c
+C  [python3.8+0x2a690]  PyVectorcall_Call+0x78
+C  [python3.8+0x13cb54]  _PyEval_EvalFrameDefault+0x7c78
+C  [python3.8+0x134894]  _PyEval_EvalCodeWithName+0xcb0
+C  [python3.8+0x2afec]  _PyFunction_Vectorcall+0xec
+C  [python3.8+0x140118]  call_function+0x210
+C  [python3.8+0x13c6c0]  _PyEval_EvalFrameDefault+0x77e4
+C  [python3.8+0x2ae6c]  function_code_fastcall+0x80
+...<more frames>...
+
+
+siginfo: si_signo: 11 (SIGSEGV), si_code: 2 (SEGV_ACCERR), si_addr: 0x00000001690e8eac
+
+Register to memory mapping:
+
+ x0=

@@ -9,3 +9,4 @@ community/migrations
 noticeboard/migrations
 user/migrations
 aws.json
+lstm.py

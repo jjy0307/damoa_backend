@@ -82,21 +82,13 @@ class UserAndCommunityAdmin(admin.ModelAdmin):
         "date_joined",
     )
 
+
 @admin.register(models.IpAndCommunity)
 class UserAndCommunityAdmin(admin.ModelAdmin):
     """User And Community Admin Definition"""
 
-    list_display = (
-        "community",
-        "ip"
-    )
+    list_display = ("community", "ip")
 
-    ordering = (
-        "community",
-        "ip"
-    )
+    ordering = ("community", "ip")
 
-    list_filter = (
-        "community",
-        "ip"
-    )
+    list_filter = ("community", "ip")

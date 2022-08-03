@@ -1,7 +1,6 @@
 from asyncore import read
 from .models import Article, ArticleLikes, Comment, CommentLikes, ArticleAndImage
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
 
 
 class ArticleSerializer(serializers.ModelSerializer):
@@ -10,21 +9,12 @@ class ArticleSerializer(serializers.ModelSerializer):
     noticeboard_id = serializers.SerializerMethodField()
     comment_count = serializers.SerializerMethodField()
     def get_user_name(self, obj):
-        # if AttributeError:
-        #     pass
-        # else:
         return obj.user.username
 
     def get_noticeboard_name(self, obj):
-        # if AttributeError:
-        #     pass
-        # else:
         return obj.noticeboard.name
 
     def get_noticeboard_id(self, obj):
-        # if AttributeError:
-        #     pass
-        # else:
         return obj.noticeboard.id
 
     def get_comment_count(self, obj):
@@ -102,8 +92,6 @@ class ArticleSerializer(serializers.ModelSerializer):
     #     #     print('file is suck', data['file'])
     #     #     raise ValidationError('file error')
     #     return data
-
-
 class ArticleAndImageSerializer(serializers.ModelSerializer):
     article_id = serializers.SerializerMethodField()
     image_url = serializers.SerializerMethodField()
@@ -112,10 +100,7 @@ class ArticleAndImageSerializer(serializers.ModelSerializer):
         return obj.article.id
 
     def get_image_url(self, obj):
-        # print(f"이미지는...{obj.image.url}")
-        # print(dir(obj.image.image))
-        return obj.image.url
-
+        return obj.image.image.url
     class Meta:
         model = ArticleAndImage
         fields = ["image", "article_id", "image_url"]
@@ -159,10 +144,10 @@ class CommentLikesSerializer(serializers.ModelSerializer):
 
 
 class ArticleSerializerForNoticeboard(serializers.ModelSerializer):
-    # user_name = serializers.SerializerMethodField()
+    user_name = serializers.SerializerMethodField()
 
-    # def get_user_name(self, obj):
-    #     return obj.user.username
+    def get_user_name(self, obj):
+        return obj.user.username
 
     class Meta:
         model = Article
@@ -170,6 +155,7 @@ class ArticleSerializerForNoticeboard(serializers.ModelSerializer):
             "id",
             "noticeboard",
             "user",
+            "user_name",
             "title",
             "content",
             "created_date",
@@ -179,18 +165,67 @@ class ArticleSerializerForNoticeboard(serializers.ModelSerializer):
 class ArticleAndImageToolSerializer(serializers.ModelSerializer):
     class Meta:
         model = ArticleAndImage
-        fields = ['article', 'image']
-        
+        fields = ["article", "image"]
+
+
 class ArticleToolSerializer(serializers.ModelSerializer):
     images = ArticleAndImageToolSerializer(many=True, read_only=True)
+
     class Meta:
         model = Article
-        fields = ['images', 'noticeboard', 'user', 'title', 'content', 'file', 'is_valid']
+        fields = [
+            "images",
+            "noticeboard",
+            "user",
+            "title",
+            "content",
+            "file",
+            "is_valid",
+        ]
+
     def create(self, validate_data):
         instance = Article.objects.create(**validate_data)
         image = self.context
         for image_data in image:
             ArticleAndImage.objects.create(article=instance, image=image[image_data])
         return instance
+class ArticleSerializerForMyPage(serializers.ModelSerializer):
+    user_name = serializers.SerializerMethodField()
+    user_id = serializers.SerializerMethodField()
+    user_email = serializers.SerializerMethodField()
+    user_created_date = serializers.SerializerMethodField()
+    noticeboard_name = serializers.SerializerMethodField()
+    noticeboard_id = serializers.SerializerMethodField()
 
-        
+    def get_user_name(self, obj):
+        return obj.user.username
+
+    def get_user_id(self, obj):
+        return obj.user.user_id
+
+    def get_user_email(self, obj):
+        return obj.user.user_email
+
+    def get_user_created_date(self, obj):
+        return obj.user.created_date
+
+    def get_noticeboard_name(self, obj):
+        return obj.noticeboard.name
+
+    def get_noticeboard_id(self, obj):
+        return obj.noticeboard.id
+
+    class Meta:
+        model = Article
+        fields = [
+            "id",
+            "user",
+            "user_id",
+            "user_name",
+            "user_email",
+            "user_created_date",
+            "title",
+            "created_date",
+            "noticeboard_name",
+            "noticeboard_id",
+        ]

@@ -55,19 +55,32 @@ class CommunitySerializer(serializers.ModelSerializer):
     def get_user_num(self, obj):
         all_user_community = obj.userandcommunity_set.all()
         return len(all_user_community)
-    
+
 
 class CommunityToolSerializer(serializers.ModelSerializer):
     class Meta:
         model = CommunityModel
-        fields = ['name', 'is_public', 'image', 'introduction']      
+        fields = ["name", "is_public", "image", "introduction"]
+
 
 class TagAndCommunityToolSerializer(serializers.ModelSerializer):
     class Meta:
         model = TagAndCommunityModel
-        fields = ['tag', 'community']
+        fields = ["tag", "community"]
+
 
 class UserAndCommunityToolSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAndCommunityModel
-        fields = ['user', 'community']    
+        fields = ["user", "community"]
+
+
+class CommunitySerializerForMyPage(serializers.ModelSerializer):
+    community_name = serializers.SerializerMethodField()
+
+    def get_community_name(self, obj):
+        return obj.community.name
+
+    class Meta:
+        model = UserAndCommunity
+        fields = ["id", "user", "community", "community_name"]

@@ -10,6 +10,7 @@ from .serializers import (
     CommentLikesSerializer,
     ArticleAndImageSerializer,
     ArticleToolSerializer,
+    ArticleSerializerForMyPage,
 )
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -35,21 +36,25 @@ class ArticleAdminList(APIView):
 class ArticleAdd(APIView):
     def change_data(self, data):
         change_data_dict = {}
-        user_info = eval(data['user_id'])
-        change_data_dict['user'] = CustomUserModel.objects.get(username=user_info['username']).id
-        change_data_dict['title'] = data['title']
-        change_data_dict['noticeboard'] = NoticboardModel.objects.get(id=int(data['noticeboard'])).id
-        if data['file'] == 'undefined':
-            change_data_dict['file'] = None
-        else: 
-            change_data_dict['file'] = data['file']
-        change_data_dict['content'] = data['content']
+        user_info = eval(data["user_id"])
+        change_data_dict["user"] = CustomUserModel.objects.get(
+            username=user_info["username"]
+        ).id
+        change_data_dict["title"] = data["title"]
+        change_data_dict["noticeboard"] = NoticboardModel.objects.get(
+            id=int(data["noticeboard"])
+        ).id
+        if data["file"] == "undefined":
+            change_data_dict["file"] = None
+        else:
+            change_data_dict["file"] = data["file"]
+        change_data_dict["content"] = data["content"]
         if lstm.sentiment_predict(data["content"]) < 50:
             change_data_dict["is_valid"] = True
         else:
             change_data_dict["is_valid"] = False
         return change_data_dict
-    
+
     def get(self, request):
         articles = Article.objects.all()
         serializer = ArticleSerializer(articles, many=True).data
@@ -57,22 +62,24 @@ class ArticleAdd(APIView):
 
     def post(self, request):
         try:
-            if (request.data['title'] == '') or (request.data['content'] == ''):
-                return Response({'message':'contents_error'}, status=400)
+            if (request.data["title"] == "") or (request.data["content"] == ""):
+                return Response({"message": "contents_error"}, status=400)
             data = ArticleAdd.change_data(self, request.data)
             image_data = {}
             for i in range(5):
                 try:
-                    image_data[f'image_{i}'] = request.data[f'image_{i}']
+                    image_data[f"image_{i}"] = request.data[f"image_{i}"]
                 except:
                     break
-            make_article_serializer = ArticleToolSerializer(data=data, context=image_data)
+            make_article_serializer = ArticleToolSerializer(
+                data=data, context=image_data
+            )
             if make_article_serializer.is_valid():
                 make_article_serializer.save()
-                return Response({'message':'success'}, status=200)
+                return Response({"message": "success"}, status=200)
             return Response(make_article_serializer.errors, status=400)
         except:
-            return Response({'message':'upload_error'}, status=500)
+            return Response({"message": "upload_error"}, status=500)
 
 
 class ArticleDetail(APIView):
@@ -156,6 +163,13 @@ class ArticleAndImageList(APIView):
     def get(self, request):
         images = ArticleAndImage.objects.all()
         serializer = ArticleAndImageSerializer(images, many=True)
+        return Response(serializer.data)
+
+
+class Mypage(APIView):
+    def get(self, request):
+        mypage = Article.objects.all()
+        serializer = ArticleSerializerForMyPage(mypage, many=True)
         return Response(serializer.data)
 
 
