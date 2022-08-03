@@ -1,4 +1,5 @@
 from .models import Article, ArticleLikes, Comment, CommentLikes, ArticleAndImage
+from datetime import date, datetime, timedelta
 from .serializers import (
     ArticleSerializer,
     ArticleLikesSerializer,
@@ -17,7 +18,6 @@ class ArticleList(APIView):
         articles = Article.objects.all()
         serializer = ArticleSerializer(articles, many=True)
         return Response(serializer.data)
-
 
 class ArticleAdd(APIView):
     def get(self, request):
@@ -97,7 +97,7 @@ class CommentList(APIView):
     def get(self, request):
         comments = Comment.objects.all()
         serializer = CommentSerializer(comments, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data) 
 
     def post(self, request):
         serializer = CommentSerializer(data=request.data)
@@ -105,6 +105,12 @@ class CommentList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class Article_Comment(APIView):
+     def get(self, request, pk):
+        comments = Comment.objects.filter(article_id=pk)
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)   
 
 
 class CommentMod(APIView):
@@ -199,11 +205,4 @@ class CommentLikesDetail(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-<<<<<<< HEAD
-
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-=======
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
->>>>>>> 3e5d77ced11ceb269acff61b218ff3b8a99b7882

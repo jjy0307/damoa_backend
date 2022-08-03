@@ -1,3 +1,4 @@
+from django.urls import reverse
 from .models import Article, ArticleLikes, Comment, CommentLikes, ArticleAndImage
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -7,10 +8,6 @@ class ArticleSerializer(serializers.ModelSerializer):
     user_name = serializers.SerializerMethodField()
     noticeboard_name = serializers.SerializerMethodField()
     noticeboard_id = serializers.SerializerMethodField()
-<<<<<<< HEAD
-
-=======
->>>>>>> 3e5d77ced11ceb269acff61b218ff3b8a99b7882
 
     def get_user_name(self, obj):
         # if AttributeError:
@@ -23,15 +20,10 @@ class ArticleSerializer(serializers.ModelSerializer):
 
     def get_noticeboard_id(self, obj):
         return obj.noticeboard.id
-
     class Meta:
         model = Article
         fields = [
             "id",
-<<<<<<< HEAD
-            "noticeboard_id",
-=======
->>>>>>> 3e5d77ced11ceb269acff61b218ff3b8a99b7882
             "user",
             "user_name",
             "noticeboard_id",
@@ -42,7 +34,7 @@ class ArticleSerializer(serializers.ModelSerializer):
             "modified_date",
             "file",
         ]
-
+        
     def validate(self, data):
         if not data["noticeboard"]:
             print("noticebaord is suck", data["noticeboard"])
@@ -80,7 +72,7 @@ class ArticleAndImageSerializer(serializers.ModelSerializer):
 
     def get_image_url(self, obj):
         # print(f"이미지는...{obj.image.url}")
-        print(dir(obj.image.image))
+        # print(dir(obj.image.image))
         return obj.image.image.url
 
     class Meta:

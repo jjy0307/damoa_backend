@@ -10,6 +10,7 @@ urlpatterns = [
     path("<int:pk>/write/put", views.ArticleMod.as_view()),
     path("<int:pk>/write/delete", views.ArticleDel.as_view()),
     path("comment/write/", views.CommentList.as_view()),
+    path("comment/write/<int:pk>", views.Article_Comment.as_view()),
     path("comment/<int:pk>/write/put", views.CommentMod.as_view()),
     path("comment/<int:pk>/write/delete", views.CommentDel.as_view()),
     path("<int:pk>/suggestion/", views.ArticleLikesDetail.as_view()),

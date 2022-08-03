@@ -2,7 +2,6 @@ from django.db import models
 from noticeboard.models import Noticeboard as NoticeboardModel
 from user.models import CustomUser as CustomUserModel
 
-
 class Image(models.Model):
     image = models.ImageField(null=True, upload_to="article/%Y%m%d")
 
