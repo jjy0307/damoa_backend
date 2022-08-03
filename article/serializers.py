@@ -1,7 +1,6 @@
 from asyncore import read
 from .models import Article, ArticleLikes, Comment, CommentLikes, ArticleAndImage
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
 
 
 class ArticleSerializer(serializers.ModelSerializer):
@@ -33,6 +32,7 @@ class ArticleSerializer(serializers.ModelSerializer):
             "file",
             "is_valid",
         ]
+
 
 class ArticleAndImageSerializer(serializers.ModelSerializer):
     article_id = serializers.SerializerMethodField()
@@ -104,7 +104,6 @@ class ArticleSerializerForNoticeboard(serializers.ModelSerializer):
             "created_date",
             "modified_date",
             "file",
-            "user_name"
         ]
 
 
@@ -135,3 +134,45 @@ class ArticleToolSerializer(serializers.ModelSerializer):
         for image_data in image:
             ArticleAndImage.objects.create(article=instance, image=image[image_data])
         return instance
+
+
+class ArticleSerializerForMyPage(serializers.ModelSerializer):
+    user_name = serializers.SerializerMethodField()
+    user_id = serializers.SerializerMethodField()
+    user_email = serializers.SerializerMethodField()
+    user_created_date = serializers.SerializerMethodField()
+    noticeboard_name = serializers.SerializerMethodField()
+    noticeboard_id = serializers.SerializerMethodField()
+
+    def get_user_name(self, obj):
+        return obj.user.username
+
+    def get_user_id(self, obj):
+        return obj.user.user_id
+
+    def get_user_email(self, obj):
+        return obj.user.user_email
+
+    def get_user_created_date(self, obj):
+        return obj.user.created_date
+
+    def get_noticeboard_name(self, obj):
+        return obj.noticeboard.name
+
+    def get_noticeboard_id(self, obj):
+        return obj.noticeboard.id
+
+    class Meta:
+        model = Article
+        fields = [
+            "id",
+            "user",
+            "user_id",
+            "user_name",
+            "user_email",
+            "user_created_date",
+            "title",
+            "created_date",
+            "noticeboard_name",
+            "noticeboard_id",
+        ]
