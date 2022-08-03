@@ -2,12 +2,6 @@ from django.db import models
 from noticeboard.models import Noticeboard as NoticeboardModel
 from user.models import CustomUser as CustomUserModel
 
-<<<<<<< HEAD
-class Image(models.Model):
-    image = models.ImageField(null=True, upload_to="article/%Y%m%d")
-
-=======
->>>>>>> 73f8c4aadbebecf76f1309b8813381e9eb05206b
 
 class Article(models.Model):
     noticeboard = models.ForeignKey(NoticeboardModel, on_delete=models.CASCADE)
@@ -21,6 +15,7 @@ class Article(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
     file = models.FileField(null=True, blank=True)
+    count = models.PositiveIntegerField(default=0)
     is_valid = models.BooleanField(default=False)
 
 
@@ -50,3 +45,7 @@ class CommentLikes(models.Model):
     user = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     likes = models.BooleanField()
+
+class IpAndArticle(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    ip = models.CharField(max_length=500)
