@@ -10,7 +10,7 @@ class Tag(models.Model):
 
 
 class Community(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     is_public = models.BooleanField(default=True)
     """
     이미지를 올리시 Django에서 자동적으로 media폴더를 생성해줍니다.
@@ -38,13 +38,13 @@ class UserAndCommunity(models.Model):
     user = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE)
     community = models.ForeignKey(Community, on_delete=models.CASCADE)
     is_admin = models.BooleanField(default=False)
-    # invited = models.BooleanField(blank=True, null=True)
-    # invite = models.BooleanField(blank=True, null=True)
-    # rejected = models.BooleanField(blank=True, null=True)
-    # accepted = models.BooleanField(blank=True, null=True)
+    invited = models.BooleanField(blank=True, null=True)
+    applied = models.BooleanField(blank=True, null=True)
+    rejected = models.BooleanField(blank=True, null=True)
+    accepted = models.BooleanField(blank=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
-    # invitation_result_date = models.DateTimeField(auto_now=True)
-
+    modified_date = models.DateTimeField(auto_now=True)
+    
     def __str__(self):
         return f"{self.user}의 {self.community} 참여일은 {self.date_joined}입니다. 관리자 여부는 {self.is_admin}입니다."
 
