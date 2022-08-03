@@ -126,10 +126,10 @@ class CommentLikesSerializer(serializers.ModelSerializer):
 
 
 class ArticleSerializerForNoticeboard(serializers.ModelSerializer):
-    # user_name = serializers.SerializerMethodField()
+    user_name = serializers.SerializerMethodField()
 
-    # def get_user_name(self, obj):
-    #     return obj.user.username
+    def get_user_name(self, obj):
+        return obj.user.username
 
     class Meta:
         model = Article
@@ -137,28 +137,39 @@ class ArticleSerializerForNoticeboard(serializers.ModelSerializer):
             "id",
             "noticeboard",
             "user",
+            "user_name",
             "title",
             "content",
             "created_date",
             "modified_date",
             "file",
         ]
-        
+
+
 class ArticleAndImageToolSerializer(serializers.ModelSerializer):
     class Meta:
         model = ArticleAndImage
-        fields = ['article', 'image']
-        
+        fields = ["article", "image"]
+
+
 class ArticleToolSerializer(serializers.ModelSerializer):
     images = ArticleAndImageToolSerializer(many=True, read_only=True)
+
     class Meta:
         model = Article
-        fields = ['images', 'noticeboard', 'user', 'title', 'content', 'file', 'is_valid']
+        fields = [
+            "images",
+            "noticeboard",
+            "user",
+            "title",
+            "content",
+            "file",
+            "is_valid",
+        ]
+
     def create(self, validate_data):
         instance = Article.objects.create(**validate_data)
         image = self.context
         for image_data in image:
             ArticleAndImage.objects.create(article=instance, image=image[image_data])
         return instance
-
-        
