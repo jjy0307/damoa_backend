@@ -10,21 +10,12 @@ class ArticleSerializer(serializers.ModelSerializer):
     noticeboard_id = serializers.SerializerMethodField()
 
     def get_user_name(self, obj):
-        # if AttributeError:
-        #     pass
-        # else:
         return obj.user.username
 
     def get_noticeboard_name(self, obj):
-        # if AttributeError:
-        #     pass
-        # else:
         return obj.noticeboard.name
 
     def get_noticeboard_id(self, obj):
-        # if AttributeError:
-        #     pass
-        # else:
         return obj.noticeboard.id
 
     class Meta:
@@ -43,34 +34,6 @@ class ArticleSerializer(serializers.ModelSerializer):
             "is_valid",
         ]
 
-    # def validate(self, data):
-    #     if not data["noticeboard"]:
-    #         print("noticebaord is suck", data["noticeboard"])
-    #         raise ValidationError("noticeboard error")
-    #     # if not data['user']:
-    #     #     print('user is suck', data['user'])
-    #     #     raise ValidationError('user error')
-    #     if not data["title"]:
-    #         print("title is suck", data["title"])
-    #         raise ValidationError("title error")
-    #     if not data["content"]:
-    #         print("content is suck", data["content"])
-    #         raise ValidationError("content error")
-    #     # if not data['created_date']:
-    #     #     print('created_date is suck', data['created_date'])
-    #     #     raise ValidationError('created_date error')
-    #     # if not data['modified_date']:
-    #     #     print('modified_date is suck', data['modified_date'])
-    #     #     raise ValidationError('modified_date error')
-    #     # if not data["image"]:
-    #     # print("image is suck", data["image"])
-    #     # raise ValidationError("image error")
-    #     # if not data['file']:
-    #     #     print('file is suck', data['file'])
-    #     #     raise ValidationError('file error')
-    #     return data
-
-
 class ArticleAndImageSerializer(serializers.ModelSerializer):
     article_id = serializers.SerializerMethodField()
     image_url = serializers.SerializerMethodField()
@@ -79,8 +42,6 @@ class ArticleAndImageSerializer(serializers.ModelSerializer):
         return obj.article.id
 
     def get_image_url(self, obj):
-        # print(f"이미지는...{obj.image.url}")
-        # print(dir(obj.image.image))
         return obj.image.image.url
 
     class Meta:
@@ -126,10 +87,10 @@ class CommentLikesSerializer(serializers.ModelSerializer):
 
 
 class ArticleSerializerForNoticeboard(serializers.ModelSerializer):
-    # user_name = serializers.SerializerMethodField()
+    user_name = serializers.SerializerMethodField()
 
-    # def get_user_name(self, obj):
-    #     return obj.user.username
+    def get_user_name(self, obj):
+        return obj.user.username
 
     class Meta:
         model = Article
@@ -142,6 +103,7 @@ class ArticleSerializerForNoticeboard(serializers.ModelSerializer):
             "created_date",
             "modified_date",
             "file",
+            "user_name"
         ]
         
 class ArticleAndImageToolSerializer(serializers.ModelSerializer):
