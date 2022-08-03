@@ -14,6 +14,7 @@ class ArticleAdmin(admin.ModelAdmin):
         "created_date",
         "modified_date",
         "file",
+        "is_valid",
     )
 
     ordering = (
@@ -23,6 +24,7 @@ class ArticleAdmin(admin.ModelAdmin):
         "content",
         "created_date",
         "modified_date",
+        "is_valid",
     )
 
     list_filter = (
@@ -32,6 +34,7 @@ class ArticleAdmin(admin.ModelAdmin):
         "content",
         "created_date",
         "modified_date",
+        "is_valid",
     )
 
 
@@ -68,6 +71,7 @@ class CommentAdmin(admin.ModelAdmin):
         "content",
         "created_date",
         "modified_date",
+        "is_valid",
     )
 
     ordering = (
@@ -76,6 +80,7 @@ class CommentAdmin(admin.ModelAdmin):
         "content",
         "created_date",
         "modified_date",
+        "is_valid",
     )
 
     list_filter = (
@@ -84,6 +89,7 @@ class CommentAdmin(admin.ModelAdmin):
         "content",
         "created_date",
         "modified_date",
+        "is_valid",
     )
 
 
@@ -108,17 +114,6 @@ class CommentLikesAdmin(admin.ModelAdmin):
         "comment",
         "likes",
     )
-
-
-@admin.register(models.Image)
-class ImageAdmin(admin.ModelAdmin):
-    """Image Admin Definition"""
-
-    list_display = ("image",)
-
-    ordering = ("image",)
-
-    list_filter = ("image",)
 
 
 @admin.register(models.ArticleAndImage)

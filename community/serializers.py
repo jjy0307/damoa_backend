@@ -1,9 +1,8 @@
-from community.models import Tag as TagModel
+from community.models import Tag as TagModel, UserAndCommunity
 from community.models import Community as CommunityModel
 from community.models import UserAndCommunity as UserAndCommunityModel
 from community.models import TagAndCommunity as TagAndCommunityModel
 from rest_framework import serializers
-import os
 
 
 class UserAndCommunitySerializer(serializers.ModelSerializer):
@@ -56,3 +55,19 @@ class CommunitySerializer(serializers.ModelSerializer):
     def get_user_num(self, obj):
         all_user_community = obj.userandcommunity_set.all()
         return len(all_user_community)
+    
+
+class CommunityToolSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CommunityModel
+        fields = ['name', 'is_public', 'image', 'introduction']      
+
+class TagAndCommunityToolSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TagAndCommunityModel
+        fields = ['tag', 'community']
+
+class UserAndCommunityToolSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAndCommunityModel
+        fields = ['user', 'community']    

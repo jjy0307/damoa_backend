@@ -1,16 +1,24 @@
+import article
 from .models import Article, ArticleLikes, Comment, CommentLikes, ArticleAndImage
+<<<<<<< HEAD
 from datetime import date, datetime, timedelta
+=======
+from user.models import CustomUser as CustomUserModel
+from noticeboard.models import Noticeboard as NoticboardModel
+>>>>>>> 73f8c4aadbebecf76f1309b8813381e9eb05206b
 from .serializers import (
     ArticleSerializer,
     ArticleLikesSerializer,
     CommentSerializer,
     CommentLikesSerializer,
     ArticleAndImageSerializer,
+    ArticleToolSerializer,
 )
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import Http404
+import run_model.lstm as lstm
 
 
 class ArticleList(APIView):
@@ -19,29 +27,60 @@ class ArticleList(APIView):
         serializer = ArticleSerializer(articles, many=True)
         return Response(serializer.data)
 
+<<<<<<< HEAD
 class ArticleAdd(APIView):
+=======
+
+class ArticleAdminList(APIView):
+>>>>>>> 73f8c4aadbebecf76f1309b8813381e9eb05206b
     def get(self, request):
-        articles = Article.objects.all
+        articles = Article.objects.all()
+        is_valid_articles = articles.filter(is_valid=True)
+        serializer = ArticleSerializer(is_valid_articles, many=True)
+        return Response(serializer.data)
+
+
+class ArticleAdd(APIView):
+    def change_data(self, data):
+        change_data_dict = {}
+        user_info = eval(data['user_id'])
+        change_data_dict['user'] = CustomUserModel.objects.get(username=user_info['username']).id
+        change_data_dict['title'] = data['title']
+        change_data_dict['noticeboard'] = NoticboardModel.objects.get(id=int(data['noticeboard'])).id
+        if data['file'] == 'undefined':
+            change_data_dict['file'] = None
+        else: 
+            change_data_dict['file'] = data['file']
+        change_data_dict['content'] = data['content']
+        if lstm.sentiment_predict(data["content"]) < 50:
+            change_data_dict["is_valid"] = True
+        else:
+            change_data_dict["is_valid"] = False
+        return change_data_dict
+    
+    def get(self, request):
+        articles = Article.objects.all()
         serializer = ArticleSerializer(articles, many=True).data
         return Response(serializer, status=status.HTTP_200_OK)
 
-    # def post(self, request):
-    #     # print('request.data', request.data)
-    #     notice_board = Noticeboard.objects.get(name="공개게시판")
-    #     print(request.data)
-    #     # print("notice_board", notice_board)
-    #     data2 = copy.deepcopy(request.data)
-    #     # print("data2", data2)
-    #     data2["noticeboard"] = notice_board.id
-    #     # print("data2['noticeboard']", data2['noticeboard'])
-    #     # print("data2", data2)
-    #     serializer = ArticleSerializer(data=data2)
-    #     print("1")
-    #     if serializer.is_valid():
-    #         print("1")
-    #         serializer.save()
-    #         return Response({"message": "글 작성 완료!!"})
-    #     return Response({"message": f"${serializer.errors}"}, 400)
+    def post(self, request):
+        try:
+            if (request.data['title'] == '') or (request.data['content'] == ''):
+                return Response({'message':'contents_error'}, status=400)
+            data = ArticleAdd.change_data(self, request.data)
+            image_data = {}
+            for i in range(5):
+                try:
+                    image_data[f'image_{i}'] = request.data[f'image_{i}']
+                except:
+                    break
+            make_article_serializer = ArticleToolSerializer(data=data, context=image_data)
+            if make_article_serializer.is_valid():
+                make_article_serializer.save()
+                return Response({'message':'success'}, status=200)
+            return Response(make_article_serializer.errors, status=400)
+        except:
+            return Response({'message':'upload_error'}, status=500)
 
 
 class ArticleDetail(APIView):
@@ -64,6 +103,11 @@ class ArticleMod(APIView):
         except Article.DoesNotExist:
             raise Http404
 
+    def get(self, request, pk, format=None):
+        article = self.get_object(pk)
+        serializer = ArticleSerializer(article)
+        return Response(serializer.data)
+
     def put(self, request, pk):
         article = self.get_object(pk)
         serializer = ArticleSerializer(article, data=request.data)
@@ -80,6 +124,11 @@ class ArticleDel(APIView):
         except Article.DoesNotExist:
             raise Http404
 
+    def get(self, request, pk, format=None):
+        article = self.get_object(pk)
+        serializer = ArticleSerializer(article)
+        return Response(serializer.data)
+
     def delete(self, request, pk):
         article = self.get_object(pk)
         article.delete()
@@ -90,6 +139,14 @@ class ArticleAndImageList(APIView):
     def get(self, request):
         images = ArticleAndImage.objects.all()
         serializer = ArticleAndImageSerializer(images, many=True)
+        return Response(serializer.data)
+
+
+class CommentAdminList(APIView):
+    def get(self, request):
+        comments = Comment.objects.all()
+        is_valid_comments = comments.filter(is_valid=True)
+        serializer = CommentSerializer(is_valid_comments, many=True)
         return Response(serializer.data)
 
 
@@ -111,6 +168,19 @@ class Article_Comment(APIView):
         comments = Comment.objects.filter(article_id=pk)
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)   
+
+
+class CommentDetail(APIView):
+    def get_object(self, pk):
+        try:
+            return Comment.objects.get(pk=pk)
+        except Comment.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        comment = self.get_object(pk)
+        serializer = CommentSerializer(comment)
+        return Response(serializer.data)
 
 
 class CommentMod(APIView):

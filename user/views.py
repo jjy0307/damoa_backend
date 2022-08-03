@@ -8,8 +8,6 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 # Create your views here.
-
-
 class UserView(APIView):
     def post(self, request):
         user_serializer = CustomUserSerializer(data=request.data)

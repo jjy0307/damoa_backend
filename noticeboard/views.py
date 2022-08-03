@@ -1,3 +1,6 @@
+from article import serializers
+from community.models import Community as CommunityModel
+from community.models import IpAndCommunity as IpAndCommunityModel
 from .models import Noticeboard
 from article.models import Article
 from .serializers import NoticeboardSerializer
@@ -25,10 +28,25 @@ class NoticeboardList(APIView):
 
 
 class NoticeboardDetail(APIView):
-    def get(self, request, pk=None):
-        query = {}
-        if pk:
-            query["noticeboard_id"] = pk
-
-        serializer = ArticleSerializer(Article.objects.filter(**query), many=True)
-        return Response(serializer.data)
+    def get_client_ip(request):
+        x_forward_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forward_for:
+            ip = x_forward_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        return ip
+    
+    def get(self, request, pk):
+        noticeboard = Noticeboard.objects.filter(community=pk)
+        serializer = NoticeboardSerializer(noticeboard, many=True)
+        
+        community = CommunityModel.objects.get(id=pk)
+        ip = NoticeboardDetail.get_client_ip(request)
+        
+        if not IpAndCommunityModel.objects.filter(ip=ip, community=community).exists():
+            community.count += 1
+            community.save()
+            
+            IpAndCommunityModel.objects.create(ip=ip, community=community)
+            
+        return Response(serializer.data, status=200)
