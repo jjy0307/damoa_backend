@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path("", views.ArticleList.as_view()),
     path("admin/", views.ArticleAdminList.as_view()),
+    path("mypage/", views.Mypage.as_view()),
     path("images/", views.ArticleAndImageList.as_view()),
     path("write/", views.ArticleAdd.as_view()),
     path("<int:pk>/write/", views.ArticleDetail.as_view()),
