@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-from django.urls import reverse
-=======
 from asyncore import read
->>>>>>> 73f8c4aadbebecf76f1309b8813381e9eb05206b
 from .models import Article, ArticleLikes, Comment, CommentLikes, ArticleAndImage
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -12,7 +8,7 @@ class ArticleSerializer(serializers.ModelSerializer):
     user_name = serializers.SerializerMethodField()
     noticeboard_name = serializers.SerializerMethodField()
     noticeboard_id = serializers.SerializerMethodField()
-
+    comment_count = serializers.SerializerMethodField()
     def get_user_name(self, obj):
         # if AttributeError:
         #     pass
@@ -30,6 +26,10 @@ class ArticleSerializer(serializers.ModelSerializer):
         #     pass
         # else:
         return obj.noticeboard.id
+
+    def get_comment_count(self, obj):
+            return obj.comment_set.count()    
+
     class Meta:
         model = Article
         fields = [
@@ -44,9 +44,10 @@ class ArticleSerializer(serializers.ModelSerializer):
             "modified_date",
             "file",
             "is_valid",
+            "count",
+            "comment_count",
         ]
-<<<<<<< HEAD
-        
+
     def validate(self, data):
         if not data["noticeboard"]:
             print("noticebaord is suck", data["noticeboard"])
@@ -73,7 +74,7 @@ class ArticleSerializer(serializers.ModelSerializer):
         #     print('file is suck', data['file'])
         #     raise ValidationError('file error')
         return data
-=======
+
 
     # def validate(self, data):
     #     if not data["noticeboard"]:
@@ -101,7 +102,6 @@ class ArticleSerializer(serializers.ModelSerializer):
     #     #     print('file is suck', data['file'])
     #     #     raise ValidationError('file error')
     #     return data
->>>>>>> 73f8c4aadbebecf76f1309b8813381e9eb05206b
 
 
 class ArticleAndImageSerializer(serializers.ModelSerializer):
@@ -114,7 +114,7 @@ class ArticleAndImageSerializer(serializers.ModelSerializer):
     def get_image_url(self, obj):
         # print(f"이미지는...{obj.image.url}")
         # print(dir(obj.image.image))
-        return obj.image.image.url
+        return obj.image.url
 
     class Meta:
         model = ArticleAndImage
@@ -175,11 +175,7 @@ class ArticleSerializerForNoticeboard(serializers.ModelSerializer):
             "created_date",
             "modified_date",
             "file",
-<<<<<<< HEAD
         ]
-=======
-        ]
-        
 class ArticleAndImageToolSerializer(serializers.ModelSerializer):
     class Meta:
         model = ArticleAndImage
@@ -198,4 +194,3 @@ class ArticleToolSerializer(serializers.ModelSerializer):
         return instance
 
         
->>>>>>> 73f8c4aadbebecf76f1309b8813381e9eb05206b

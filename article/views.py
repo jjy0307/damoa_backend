@@ -1,11 +1,8 @@
 import article
-from .models import Article, ArticleLikes, Comment, CommentLikes, ArticleAndImage
-<<<<<<< HEAD
-from datetime import date, datetime, timedelta
-=======
+from .models import Article, ArticleLikes, Comment, CommentLikes, ArticleAndImage, NoticeboardModel, IpAndArticle
 from user.models import CustomUser as CustomUserModel
 from noticeboard.models import Noticeboard as NoticboardModel
->>>>>>> 73f8c4aadbebecf76f1309b8813381e9eb05206b
+
 from .serializers import (
     ArticleSerializer,
     ArticleLikesSerializer,
@@ -27,12 +24,7 @@ class ArticleList(APIView):
         serializer = ArticleSerializer(articles, many=True)
         return Response(serializer.data)
 
-<<<<<<< HEAD
-class ArticleAdd(APIView):
-=======
-
 class ArticleAdminList(APIView):
->>>>>>> 73f8c4aadbebecf76f1309b8813381e9eb05206b
     def get(self, request):
         articles = Article.objects.all()
         is_valid_articles = articles.filter(is_valid=True)
@@ -93,7 +85,32 @@ class ArticleDetail(APIView):
     def get(self, request, pk, format=None):
         article = self.get_object(pk)
         serializer = ArticleSerializer(article)
+
+        ip = self.get_client_ip(request)
+        print(article.count)
+        if not IpAndArticle.objects.filter(ip=ip, article=article).exists(): 
+            article.count += 1
+            article.save()
+            print(article.count)
+            IpAndArticle.objects.create(ip=ip, article=article)
         return Response(serializer.data)
+
+    def get_client_ip(self, request):
+        x_forward_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forward_for:
+            ip = x_forward_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        return ip 
+class ArticleView(APIView):
+    
+    def get(self, request, pk):
+        article = Article.objects.filter(noticeboard=pk)
+        
+        
+        print(article.count)
+        serializer = ArticleSerializer(article, many=True)
+        return Response(serializer.data, status=200)        
 
 
 class ArticleMod(APIView):

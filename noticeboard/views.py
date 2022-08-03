@@ -50,3 +50,9 @@ class NoticeboardDetail(APIView):
             IpAndCommunityModel.objects.create(ip=ip, community=community)
             
         return Response(serializer.data, status=200)
+    
+class NoticeboardObject(APIView):
+    def get(self, request, pk):
+        noticeboard = Noticeboard.objects.filter(id=pk)
+        serializer = NoticeboardSerializer(noticeboard, many=True)
+        return Response(serializer.data, status=200)
