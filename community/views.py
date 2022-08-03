@@ -113,16 +113,13 @@ class MainCreateCommunity(APIView):
         if make_community_serializer.is_valid():
             make_community_serializer.save()
 
-        for tag in request.data["tags"].split(","):
-            make_tag_and_community_serializer = TagAndCommunityToolSerializer(
-                data=MainCreateCommunity.tag_and_community_data(self, tag, request.data)
-            )
-            if make_tag_and_community_serializer.is_valid():
-                make_tag_and_community_serializer.save()
-
-        make_user_and_community_serializer = UserAndCommunitySerializer(
-            data=MainCreateCommunity.user_and_community_data(self, request.data)
-        )
+        if request.data['tags']:
+            for tag in request.data['tags'].split(','):
+                make_tag_and_community_serializer = TagAndCommunityToolSerializer(data=MainCreateCommunity.tag_and_community_data(self, tag, request.data))        
+                if make_tag_and_community_serializer.is_valid():
+                    make_tag_and_community_serializer.save()
+        
+        make_user_and_community_serializer = UserAndCommunitySerializer(data=MainCreateCommunity.user_and_community_data(self, request.data))
         if make_user_and_community_serializer.is_valid():
             make_user_and_community_serializer.save()
         return Response({"message": "성공적으로 완성되었습니다"}, status=200)
