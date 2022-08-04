@@ -38,16 +38,18 @@ class UserAndCommunity(models.Model):
     user = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE)
     community = models.ForeignKey(Community, on_delete=models.CASCADE)
     is_admin = models.BooleanField(default=False)
-    invited = models.BooleanField(blank=True, null=True)
-    applied = models.BooleanField(blank=True, null=True)
-    rejected = models.BooleanField(blank=True, null=True)
-    accepted = models.BooleanField(blank=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return f"{self.user}의 {self.community} 참여일은 {self.date_joined}입니다. 관리자 여부는 {self.is_admin}입니다."
 
+# class UserAndCommunityInvitation(models.Model):
+#     invitation = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE, related_name="admin_user")
+#     invited = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE, related_name="invited_user")
+#     community = models.ForeignKey(Community, on_delete=models.CASCADE)
+#     reject = models.BooleanField(default=False)
+#     accept = models.BooleanField(default=False)
+#     date = models.DateTimeField(auto_now_add=True)
 
 class IpAndCommunity(models.Model):
     community = models.ForeignKey(Community, on_delete=models.CASCADE)
