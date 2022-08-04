@@ -161,7 +161,7 @@ class ArticleDel(APIView):
 
 class ArticleAndImageList(APIView):
     def get(self, request):
-        images = ArticleAndImage.objects.all()
+        images = ArticleAndImage.objects.filter(article=id)
         serializer = ArticleAndImageSerializer(images, many=True)
         return Response(serializer.data)
 
