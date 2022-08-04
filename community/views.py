@@ -50,9 +50,7 @@ class MainLoginedCommunity(APIView):
             return Response(data, status=200)
 
         user_community = UserAndCommunityModel.objects.filter(user=request.user)
-        user_community_serializer = UserAndCommunitySerializer(
-            user_community, many=True
-        )
+        user_community_serializer = UserAndCommunitySerializer(user_community, many=True)
         data["community"] = user_community_serializer.data
         data["tag"] = []
         for s_datas in user_community_serializer.data:
@@ -63,9 +61,7 @@ class MainLoginedCommunity(APIView):
         for tag_data in TagModel.objects.all():
             data["all_tag"].append(tag_data.name)
 
-        data[
-            "community_hit_count"
-        ] = MainLoginedCommunity.get_community_count_order_list(self)
+        data["community_hit_count"] = MainLoginedCommunity.get_community_count_order_list(self)
         return Response(data, status=200)
 
 
