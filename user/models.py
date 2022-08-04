@@ -13,7 +13,6 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    # python manage.py createsuperuser 사용 시 해당 함수가 사용됨
     def create_superuser(self, user_id, username, password=None):
         user = self.create_user(user_id=user_id, password=password, username=username)
         user.is_admin = True

@@ -8,8 +8,6 @@ class Article(models.Model):
     user = models.ForeignKey(
         CustomUserModel, on_delete=models.SET_NULL, null=True, blank=True
     )
-    """user는 on_delete=models.SET_null로 했는데 그 이유는 커뮤니가 사라지면 게시판도 사라지는게 맞지만 유저가 사라져도 글은 기록이 남을수 있기때문입니다.
-    """
     title = models.CharField(max_length=30)
     content = models.TextField(max_length=1000)
     created_date = models.DateTimeField(auto_now_add=True)
