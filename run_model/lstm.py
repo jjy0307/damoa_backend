@@ -8,7 +8,8 @@ import tensorflow as tf
 
 
 
-loaded_model = tf.keras.models.load_model('C:/Users/USER/Desktop/최종 프로젝트/NBLastProjectBackend/model/lstm_model.h5')
+# loaded_model = tf.keras.models.load_model('C:/Users/USER/Desktop/최종 프로젝트/NBLastProjectBackend/model/lstm_model.h5')
+loaded_model = tf.keras.models.load_model('./NBLastProjectBackend/model/lstm_model.h5')
 
 okt = Okt()
 okt.morphs('역시 한국인은 남 잘되는 꼴을 못 봐', stem=True)
@@ -18,7 +19,8 @@ max_len = 30
 
 import pickle
 
-with open('C:/Users/USER/Desktop/최종 프로젝트/NBLastProjectBackend/model/tokenizer_lstm.pickle', 'rb') as handle:
+# with open('C:/Users/USER/Desktop/최종 프로젝트/NBLastProjectBackend/model/tokenizer_lstm.pickle', 'rb') as handle:
+with open('./NBLastProjectBackend/model/tokenizer_lstm.pickle', 'rb') as handle:
     tokenizer = pickle.load(handle)
 
 
