@@ -10,4 +10,5 @@ urlpatterns = [
     path("signup/", views.UserView.as_view()),
     path("login/", views.JwtTokenObtainPairView.as_view()),
     path("refresh/", TokenRefreshView.as_view()),
+    path("mypage/", views.MyPage.as_view()),
 ]
