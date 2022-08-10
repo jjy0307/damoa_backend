@@ -189,3 +189,45 @@ class ArticleSerializerForMyPage(serializers.ModelSerializer):
             "noticeboard_name",
             "noticeboard_id",
         ]
+
+class ForMyPageArticleSerializer(serializers.ModelSerializer):
+    noticeboard_name = serializers.SerializerMethodField()
+    community_name = serializers.SerializerMethodField()
+    class Meta:
+        model = Article
+        fields = ['id', 'noticeboard', 'noticeboard_name', 'community_name', 'title', 'created_date', 'modified_date', 'count']
+        
+    def get_noticeboard_name(self, obj):
+        return obj.noticeboard.name
+    
+    def get_community_name(self, obj):
+        return obj.noticeboard.community.name
+        
+class ForMyPageCommentSerializer(serializers.ModelSerializer):
+    noticeboard_name = serializers.SerializerMethodField()
+    noticeboard_id = serializers.SerializerMethodField()
+    community_name = serializers.SerializerMethodField()
+    community_id = serializers.SerializerMethodField()
+    article_title = serializers.SerializerMethodField()
+    article_id = serializers.SerializerMethodField()
+    class Meta:
+        model = Comment
+        fields = ['id', 'noticeboard_name', 'noticeboard_id', 'community_name', 'community_id', 'content', 'created_date', 'modified_date', 'article_title', 'article_id']
+        
+    def get_noticeboard_name(self, obj):
+        return obj.article.noticeboard.name
+    
+    def get_noticeboard_id(self, obj):
+        return obj.article.noticeboard.id
+    
+    def get_community_name(self, obj):
+        return obj.article.noticeboard.community.name
+    
+    def get_community_id(self, obj):
+        return obj.article.noticeboard.community.id
+    
+    def get_article_title(self, obj):
+        return obj.article.title
+    
+    def get_article_id(self, obj):
+        return obj.article.id
