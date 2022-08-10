@@ -2,6 +2,7 @@ from community.models import Tag as TagModel, UserAndCommunity
 from community.models import Community as CommunityModel
 from community.models import UserAndCommunity as UserAndCommunityModel
 from community.models import TagAndCommunity as TagAndCommunityModel
+from community.models import UserAndCommunityInvitation as UserAndCommunityInvitationModel
 from rest_framework import serializers
 
 
@@ -84,3 +85,44 @@ class CommunitySerializerForMyPage(serializers.ModelSerializer):
     class Meta:
         model = UserAndCommunity
         fields = ["id", "user", "community", "community_name"]
+
+class ForMyPageCommunitySerialzer(serializers.ModelSerializer):
+    community_name = serializers.SerializerMethodField()
+    community_request = serializers.SerializerMethodField()
+    
+    def get_community_name(self, obj):
+        return obj.community.name
+    
+    def get_community_request(self, obj):
+        data = []
+        for que in obj.community.userandcommunityinvitation_set.all():
+            dic_ = {}
+            dic_['id'] = que.id
+            dic_['user'] = que.user.user_id
+            dic_['community'] = que.community.name
+            dic_['invited'] = que.invited
+            dic_['request'] = que.request
+            dic_['reject'] = que.reject
+            dic_['accept'] = que.accept
+            dic_['date'] = que.date
+            data.append(dic_)
+        return data
+    
+    class Meta:
+        model = UserAndCommunityModel
+        fields = ["community", "community_name", "community_request"]
+        
+class ForMyPageCommunityInvitationSerializer(serializers.ModelSerializer):
+    community_name = serializers.SerializerMethodField()
+    user_id = serializers.SerializerMethodField()
+    
+    def get_community_name(self, obj):
+        return obj.community.name
+    
+    def get_user_id(self, obj):
+        return obj.user.user_id
+    
+    class Meta:
+        model = UserAndCommunityInvitationModel
+        fields = ['id', 'user_id', 'community_name', 'invited','request','reject','accept','date',]
+        
