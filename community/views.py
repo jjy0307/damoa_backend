@@ -173,10 +173,3 @@ class MainCreateCommunity(APIView):
         if make_user_and_community_serializer.is_valid():
             make_user_and_community_serializer.save()
         return Response({"message": "성공적으로 완성되었습니다"}, status=200)
-
-
-class MypageForCommunity(APIView):
-    def get(self, request):
-        mypage = UserAndCommunityModel.objects.all()
-        serializer = CommunitySerializerForMyPage(mypage, many=True)
-        return Response(serializer.data)
