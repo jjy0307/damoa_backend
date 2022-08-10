@@ -110,11 +110,12 @@ class ForMyPageCommunitySerialzer(serializers.ModelSerializer):
     
     class Meta:
         model = UserAndCommunityModel
-        fields = ["community", "community_name", "community_request"]
+        fields = ["community", "community_name", "community_request", "is_admin"]
         
 class ForMyPageCommunityInvitationSerializer(serializers.ModelSerializer):
     community_name = serializers.SerializerMethodField()
     user_id = serializers.SerializerMethodField()
+    community_is_admin = serializers.SerializerMethodField()
     
     def get_community_name(self, obj):
         return obj.community.name
@@ -122,7 +123,14 @@ class ForMyPageCommunityInvitationSerializer(serializers.ModelSerializer):
     def get_user_id(self, obj):
         return obj.user.user_id
     
+    def get_community_is_admin(self, obj):
+        return obj.community.userandcommunity_set.get(community=obj.community.id).is_admin
+    
     class Meta:
         model = UserAndCommunityInvitationModel
-        fields = ['id', 'user_id', 'community_name', 'invited','request','reject','accept','date',]
-        
+        fields = ['id', 'user_id', 'community_name', 'invited','request','reject','accept','date', 'community_is_admin']
+
+class UserAndCommunityInvitationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAndCommunityInvitationModel
+        fields = '__all__'
