@@ -80,7 +80,19 @@ class ArticleAdd(APIView):
             return Response(make_article_serializer.errors, status=400)
         except:
             return Response({"message": "upload_error"}, status=500)
-
+    
+    def put(self, request):
+        if (request.data["title"] == "") or (request.data["content"] == ""):
+            return Response({"message": "contents_error"}, status=400)
+        data = ArticleAdd.change_data(self, request.data)
+        article = Article.objects.get(id=request.data['article'])
+        make_article_serializer = ArticleToolSerializer(
+            article, data=data
+        )
+        if make_article_serializer.is_valid():
+            make_article_serializer.save()
+            return Response({"message": "success"}, status=200)
+        return Response(make_article_serializer.errors, status=400)
 
 class ArticleDetail(APIView):
     def get_object(self, pk):
