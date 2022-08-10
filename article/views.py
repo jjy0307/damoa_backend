@@ -106,11 +106,9 @@ class ArticleDetail(APIView):
         serializer = ArticleSerializer(article)
 
         ip = self.get_client_ip(request)
-        print(article.count)
         if not IpAndArticle.objects.filter(ip=ip, article=article).exists(): 
             article.count += 1
             article.save()
-            print(article.count)
             IpAndArticle.objects.create(ip=ip, article=article)
         return Response(serializer.data)
 
@@ -122,12 +120,8 @@ class ArticleDetail(APIView):
             ip = request.META.get('REMOTE_ADDR')
         return ip 
 class ArticleView(APIView):
-    
     def get(self, request, pk):
         article = Article.objects.filter(noticeboard=pk)
-        
-        
-        print(article.count)
         serializer = ArticleSerializer(article, many=True)
         return Response(serializer.data, status=200)        
 
