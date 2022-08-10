@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from user.serializers import CustomUserSerializer, CustomUserTokenObtainPairSerializer
+from community import serializers
+from user.serializers import CustomUserSerializer, CustomUserTokenObtainPairSerializer, MyPageSerializer
 from rest_framework import status, permissions
 from django.contrib.auth import login, authenticate
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from user.models import CustomUser as CustomUserModel
 
 # Create your views here.
 class UserView(APIView):
@@ -32,3 +34,10 @@ class OnlyAuthenticatedUserView(APIView):
                 {"error": "접근 권한이 없습니다."}, status=status.HTTP_401_UNAUTHORIZED
             )
         return Response({"message": "인증 성공!"})
+
+
+class MyPage(APIView):
+    def get(self, request):
+        user = CustomUserModel.objects.get(user_id = request.user.user_id)
+        serializer = MyPageSerializer(user).data
+        return Response(serializer)
