@@ -1,7 +1,10 @@
+from ast import For
+from community.models import UserAndCommunityInvitation
 from user.models import CustomUser as CustomUserModel
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
+from article.serializers import ForMyPageArticleSerializer, ForMyPageCommentSerializer
+from community.serializers import ForMyPageCommunitySerialzer, ForMyPageCommunityInvitationSerializer
 
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,3 +40,13 @@ class CustomUserTokenObtainPairSerializer(TokenObtainPairSerializer):
         token["id"] = user.id
         token["username"] = user.username
         return token
+
+class MyPageSerializer(serializers.ModelSerializer):
+    userandcommunity_set = ForMyPageCommunitySerialzer(many=True, read_only=True)
+    article_set = ForMyPageArticleSerializer(many=True, read_only=True)
+    comment_set = ForMyPageCommentSerializer(many=True, read_only=True)
+    userandcommunityinvitation_set = ForMyPageCommunityInvitationSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = CustomUserModel
+        fields = ["user_id", "username", "created_date", "userandcommunity_set", "userandcommunityinvitation_set", "comment_set", "article_set"]
