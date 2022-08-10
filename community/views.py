@@ -3,19 +3,21 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db import transaction
 from django.db.models import Q, Prefetch
+from community import serializers
 
 from community.serializers import (
     CommunitySerializer,
     UserAndCommunitySerializer,
     CommunityToolSerializer,
     TagAndCommunityToolSerializer,
-    CommunitySerializerForMyPage,
+    UserAndCommunityInvitationSerializer
 )
 
 from user.models import CustomUser as CustomUserModel
-from community.models import Community as CommunityModel
+from community.models import Community as CommunityModel, UserAndCommunityInvitation
 from community.models import UserAndCommunity as UserAndCommunityModel
 from community.models import Tag as TagModel
+from community.models import UserAndCommunityInvitation as UserAndCommunityInvitationModel
 
 # Create your views here.
 class MainRecommendationCommunity(APIView):
@@ -145,6 +147,7 @@ class MainCreateCommunity(APIView):
         user_and_community_data["community"] = CommunityModel.objects.get(
             name=data["name"]
         ).id
+        user_and_community_data['is_admin'] = True
         return user_and_community_data
 
     @transaction.atomic
@@ -173,3 +176,31 @@ class MainCreateCommunity(APIView):
         if make_user_and_community_serializer.is_valid():
             make_user_and_community_serializer.save()
         return Response({"message": "성공적으로 완성되었습니다"}, status=200)
+
+class InvitationRequest(APIView):
+    def put(self, request):
+        data = {}
+        invitation_object = UserAndCommunityInvitationModel.objects.get(id=request.data['request_id'])
+        data['user'] = invitation_object.user.id
+        data['community'] = invitation_object.community.id
+        if request.data["request_method"] == 'accept':
+            data['accept'] = True
+            data['reject'] = False
+        if request.data["request_method"] == 'decline':
+            data['accept'] = False
+            data['reject'] = True
+        invitation_serializers = UserAndCommunityInvitationSerializer(invitation_object, data)
+        user_and_community_serializers = UserAndCommunitySerializer(data={'user':invitation_object.user.id, 'community':invitation_object.community.id})
+        if invitation_serializers.is_valid():
+            invitation_serializers.save()
+            if user_and_community_serializers.is_valid():
+                user_and_community_serializers.save()
+            return Response(status=200)
+        return Response(status=400)
+    
+    def delete(self, request):
+        try:
+            UserAndCommunityInvitationModel.objects.filter(id=request.data['request_id']).delete()
+            return Response(status=200)
+        except:
+            return Response(status=400)
