@@ -84,7 +84,7 @@ class UserAndCommunityAdmin(admin.ModelAdmin):
 
 
 @admin.register(models.IpAndCommunity)
-class UserAndCommunityAdmin(admin.ModelAdmin):
+class UserAndIpAdmin(admin.ModelAdmin):
     """User And Community Admin Definition"""
 
     list_display = ("community", "ip")
@@ -92,3 +92,8 @@ class UserAndCommunityAdmin(admin.ModelAdmin):
     ordering = ("community", "ip")
 
     list_filter = ("community", "ip")
+
+
+@admin.register(models.UserAndCommunityInvitation)
+class UserAndCommunityInvitationAdmin(admin.ModelAdmin):
+    list_display = ('user', 'community', 'reject', 'accept', 'date')
