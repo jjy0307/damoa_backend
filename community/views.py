@@ -2,13 +2,13 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db import transaction
+from django.db.models import Q, Prefetch
 
 from community.serializers import (
     CommunitySerializer,
     UserAndCommunitySerializer,
     CommunityToolSerializer,
     TagAndCommunityToolSerializer,
-    UserAndCommunityToolSerializer,
     CommunitySerializerForMyPage,
 )
 
@@ -18,6 +18,75 @@ from community.models import UserAndCommunity as UserAndCommunityModel
 from community.models import Tag as TagModel
 
 # Create your views here.
+class MainRecommendationCommunity(APIView):
+    def get_community_count_order_list(self):
+        order_data = []
+        community_order_list = CommunityModel.objects.all().order_by("-count")
+        count_num = 0
+        for community_query in community_order_list:
+            order_data.append(
+                {"community": community_query.name, "count": community_query.count}
+            )
+            if count_num == 4:
+                break
+            count_num += 1
+        return order_data
+    
+    def get(self, request):
+        data = {}
+        public_community = CommunityModel.objects.filter(is_public=True)
+        serializer = CommunitySerializer(public_community, many=True)
+        data["community"] = serializer.data
+        data["tag"] = []
+        for s_datas in serializer.data:
+            for s_data in s_datas["tag"]:
+                if s_data["name"] not in data["tag"]:
+                    data["tag"].append(s_data["name"])
+        data[
+            "community_hit_count"
+        ] = MainLoginedCommunity.get_community_count_order_list(self)
+        return Response(data, status=200)
+
+
+class MainLoginedRecommendationCommunity(APIView):
+    def get_community_count_order_list(self):
+        order_data = []
+        community_order_list = CommunityModel.objects.all().order_by("-count")
+        count_num = 0
+        for community_query in community_order_list:
+            order_data.append(
+                {"community": community_query.name, "count": community_query.count}
+            )
+            if count_num == 4:
+                break
+            count_num += 1
+        return order_data
+    
+    def get(self, request):
+        user = request.user
+        data = {}
+        public_community = CommunityModel.objects.filter(is_public=True)
+        a = public_community.prefetch_related(Prefetch(
+            'userandcommunity_set',
+            queryset=UserAndCommunityModel.objects.filter(~Q(user=user)),
+            to_attr = 'user'
+            ),
+            )
+        # print(public_community)
+        # print("===============")
+        # print(a)
+        serializer = CommunitySerializer(public_community, many=True)
+        data["community"] = serializer.data
+        data["tag"] = []
+        for s_datas in serializer.data:
+            for s_data in s_datas["tag"]:
+                if s_data["name"] not in data["tag"]:
+                    data["tag"].append(s_data["name"])
+        data[
+            "community_hit_count"
+        ] = MainLoginedCommunity.get_community_count_order_list(self)
+        return Response(data, status=200)
+
 class MainLoginedCommunity(APIView):
     def get_community_count_order_list(self):
         order_data = []
@@ -31,24 +100,9 @@ class MainLoginedCommunity(APIView):
                 break
             count_num += 1
         return order_data
-
+    
     def get(self, request):
-        user = request.user
         data = {}
-        if user.is_anonymous:
-            public_community = CommunityModel.objects.filter(is_public=True)
-            serializer = CommunitySerializer(public_community, many=True)
-            data["community"] = serializer.data
-            data["tag"] = []
-            for s_datas in serializer.data:
-                for s_data in s_datas["tag"]:
-                    if s_data["name"] not in data["tag"]:
-                        data["tag"].append(s_data["name"])
-            data[
-                "community_hit_count"
-            ] = MainLoginedCommunity.get_community_count_order_list(self)
-            return Response(data, status=200)
-
         user_community = UserAndCommunityModel.objects.filter(user=request.user)
         user_community_serializer = UserAndCommunitySerializer(user_community, many=True)
         data["community"] = user_community_serializer.data
