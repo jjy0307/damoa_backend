@@ -4,9 +4,5 @@ venv
 custom_settings.py
 NBLastProjectBackend/settings.py
 media
-article/migrations
-community/migrations
-noticeboard/migrations
-user/migrations
 aws.json
 lstm.py
