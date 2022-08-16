@@ -41,10 +41,12 @@ class TagAndCommunitySerializer(serializers.ModelSerializer):
 class CommunitySerializer(serializers.ModelSerializer):
     tag = serializers.SerializerMethodField(read_only=True)
     user_num = serializers.SerializerMethodField(read_only=True)
-
+    user = serializers.SerializerMethodField(read_only=True)
+    invitation = serializers.SerializerMethodField(read_only=True)
+    
     class Meta:
         model = CommunityModel
-        fields = ["name", "is_public", "image", "introduction", "tag", "user_num"]
+        fields = ["invitation", "user", "name", "is_public", "image", "introduction", "tag", "user_num"]
 
     def get_tag(self, obj):
         all_tag_community = obj.tagandcommunity_set.all()
@@ -56,6 +58,19 @@ class CommunitySerializer(serializers.ModelSerializer):
     def get_user_num(self, obj):
         all_user_community = obj.userandcommunity_set.all()
         return len(all_user_community)
+    
+    def get_user(self, obj):
+        data = []
+        all_user_community = obj.userandcommunity_set.all()
+        for user in all_user_community:
+            data.append(user.user.user_id)
+        return data
+    
+    def get_invitation(self, obj):
+        data = []
+        for invitation in obj.userandcommunityinvitation_set.all():
+            data.append(invitation.user.id)
+        return data
 
 
 class CommunityToolSerializer(serializers.ModelSerializer):
@@ -124,8 +139,10 @@ class ForMyPageCommunityInvitationSerializer(serializers.ModelSerializer):
         return obj.user.user_id
     
     def get_community_is_admin(self, obj):
-        return obj.community.userandcommunity_set.get(community=obj.community.id).is_admin
-    
+        try:
+            return obj.community.userandcommunity_set.get(community=obj.community.id).is_admin
+        except:
+            return []
     class Meta:
         model = UserAndCommunityInvitationModel
         fields = ['id', 'user_id', 'community_name', 'invited','request','reject','accept','date', 'community_is_admin']
