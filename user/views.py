@@ -8,7 +8,7 @@ from django.contrib.auth import login, authenticate
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from user.models import CustomUser as CustomUserModel
-
+from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 class UserView(APIView):
     def post(self, request):
@@ -18,7 +18,20 @@ class UserView(APIView):
             return Response({"message": "가입 완료"}, status=status.HTTP_200_OK)
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+    def put(self, request):
+        permission_classes = (IsAuthenticated,)
+        user = CustomUserModel.objects.get(user_id = request.user.user_id)
+        if request.data['password'] == user.password:
+            return Response(status=400)
+        data = {"user_id":request.user.user_id, "username":request.user.username, "password":request.data["password"]}
+        user_serializer = CustomUserSerializer(user, data=data)
+        if user_serializer.is_valid():
+            user_serializer.save()
+            return Response(status=200)
+        else:
+            print(user_serializer.errors)
+        return Response(status=400)
+    
 class JwtTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomUserTokenObtainPairSerializer
 
