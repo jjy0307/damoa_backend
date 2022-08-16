@@ -8,4 +8,5 @@ urlpatterns = [
     path("main/my_community/", views.MainLoginedCommunity.as_view()),
     path("main/create", views.MainCreateCommunity.as_view()),
     path("invitation/request/", views.InvitationRequest.as_view()),
+    path("mypage/", views.Mypage.as_view()),
 ]
