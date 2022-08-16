@@ -93,7 +93,14 @@ class ArticleAdd(APIView):
             make_article_serializer.save()
             return Response({"message": "success"}, status=200)
         return Response(make_article_serializer.errors, status=400)
-
+    
+    def delete(self, request):
+        try:
+            Article.objects.filter(id=request.data['request_id']).delete()
+            return Response(status=200)
+        except:
+            return Response(status=400)
+    
 class ArticleDetail(APIView):
     def get_object(self, pk):
         try:
@@ -200,6 +207,10 @@ class CommentList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def delete(self, request):
+        Comment.objects.filter(id=request.data['request_id']).delete()
+        return Response(status=200)
+    
 class Article_Comment(APIView):
      def get(self, request, pk):
         comments = Comment.objects.filter(article_id=pk)
