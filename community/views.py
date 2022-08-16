@@ -70,17 +70,17 @@ class MainLoginedRecommendationCommunity(APIView):
         public_community = CommunityModel.objects.filter(is_public=True)
         a = public_community.prefetch_related(Prefetch(
             'userandcommunity_set',
-            queryset=UserAndCommunityModel.objects.filter(~Q(user=user)),
+            queryset=UserAndCommunityModel.objects.filter(~Q(user=user.id)),
             to_attr = 'user'
             ),
             )
-        # print(public_community)
-        # print("===============")
-        # print(a)
         serializer = CommunitySerializer(public_community, many=True)
-        data["community"] = serializer.data
+        data["community"] = []
         data["tag"] = []
         for s_datas in serializer.data:
+            if request.user.user_id in s_datas['user']:
+                continue
+            data["community"].append(s_datas)
             for s_data in s_datas["tag"]:
                 if s_data["name"] not in data["tag"]:
                     data["tag"].append(s_data["name"])
@@ -178,6 +178,19 @@ class MainCreateCommunity(APIView):
         return Response({"message": "성공적으로 완성되었습니다"}, status=200)
 
 class InvitationRequest(APIView):
+    def post(self, request):
+        data = {}
+        community = CommunityModel.objects.get(name=request.data['request_name'])
+        user = CustomUserModel.objects.get(user_id=request.user.user_id)
+        data['user'] = user.id
+        data['community'] = community.id
+        invitation_serializers = UserAndCommunityInvitationSerializer(data=data)
+        if invitation_serializers.is_valid():
+            invitation_serializers.save()
+            return Response(status=200)
+        return Response(status=400)
+    
+    
     def put(self, request):
         data = {}
         invitation_object = UserAndCommunityInvitationModel.objects.get(id=request.data['request_id'])
@@ -199,8 +212,21 @@ class InvitationRequest(APIView):
         return Response(status=400)
     
     def delete(self, request):
-        try:
+        try: 
             UserAndCommunityInvitationModel.objects.filter(id=request.data['request_id']).delete()
+            return Response(status=200)
+        except:
+            user_id = request.user.id
+            community_id = CommunityModel.objects.get(name=request.data['request_name']).id
+            UserAndCommunityInvitationModel.objects.filter(user=user_id, community=community_id).delete()
+            return Response(status=200)
+        else:
+            return Response(status=400)
+                
+class Mypage(APIView):
+    def delete(self, request):
+        try:
+            UserAndCommunityModel.objects.filter(id=request.data['request_id']).delete()
             return Response(status=200)
         except:
             return Response(status=400)
