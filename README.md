@@ -125,7 +125,12 @@
 * 댓글 작성
    * 내용이 없으면 작성 불가능
 
-## 😣 TroubleShooting
+## 사용한 모델
+* [게시글 감정분석](https://colab.research.google.com/drive/19Ikjcbwx0sWdgx7x1_ooXF2fU5lgsdTh?usp=sharing)
+
+* [비속어 분류](https://colab.research.google.com/drive/1ATOO7HLKlde4koGZ0KPf36-AhIuWPJPJ?usp=sharing)
+
+* [EasyOCR](https://colab.research.google.com/drive/1q1eziFDLWD0mWkuFAfaEJBcXtU27StfF?usp=sharing)
 
 ## 🏚 Architecture
 ![186589235-d27760f4-2d18-4642-90be-950eca5e2a92](https://user-images.githubusercontent.com/90381057/186792240-d9ec22b6-849c-4743-a5fd-8e01c93194a5.png)
